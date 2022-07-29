@@ -1,0 +1,6 @@
+Accepte terme to use Marketplace: 
+Some controls have been disabled because you are missing the correct permission(s). The missing permission(s) are: aws-marketplace:ViewSubscriptions, aws-marketplace:Subscribe.
+
+Pas le droit de supprimer sa clef API
+
+Impossible de se connecter en Serial
