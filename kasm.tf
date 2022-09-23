@@ -21,7 +21,7 @@ output "dbinfo" {
   value = module.kasmweb.dbinfo
 }
 
-output "db-sh" {
+output "dbsh" {
   value = module.kasmweb.installdb
   sensitive = true
 }
