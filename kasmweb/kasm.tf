@@ -136,7 +136,7 @@ resource "aws_route53_record" "kasm-cname" {
   type    = "CNAME"
   ttl     = 300
   records = [
-    aws_route53_record.kasm-web-app.fqdn
+    aws_route53_record.kasm-web-app[count.index].fqdn
   ]
 }
 output "install" {
