@@ -3,6 +3,11 @@ resource "random_password" "database" {
   special          = true
   override_special = "_,"
 }
+resource "random_password" "databaseroot" {
+  length           = 26
+  special          = true
+  override_special = "_,"
+}
 resource "random_password" "redis" {
   length           = 26
   special          = true

@@ -142,6 +142,9 @@ resource "aws_route53_record" "kasm-cname" {
 output "install" {
   value = "kasm_release/install.sh -S db -e -Q ${random_password.database.result} -R ${random_password.redis.result} -U ${random_password.user.result} -P ${random_password.admin.result} -M ${random_password.manager.result}"
 }
+output "installdb" {
+  value = "kasm_release/install.sh -S init_remote_db -e -Q ${random_password.database.result} -U ${random_password.user.result} -P ${random_password.admin.result} -M ${random_password.manager.result} -q ${aws_rds_cluster.kasmdb.endpoint} -g root -G ${random_password.databaseroot.result}"
+}
 
 resource "aws_rds_cluster" "kasmdb" {
   cluster_identifier = "kasmdb"
@@ -149,8 +152,8 @@ resource "aws_rds_cluster" "kasmdb" {
   engine_mode        = "provisioned"
   engine_version     = "14.3"
   database_name      = "kasm"
-  master_username    = "kasmapp"
-  master_password    = random_password.database.result
+  master_username    = "root"
+  master_password    = random_password.databaseroot.result
   db_subnet_group_name = aws_db_subnet_group.kasmdb.name
 
   network_type = "IPV4"
