@@ -109,6 +109,13 @@ resource "aws_security_group" "sg_access" {
     protocol    = "tcp"
     cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
   }
+  ingress {
+    description = "SSH from Wallix "
+    from_port   = 2242
+    to_port     = 2242
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
+  }
 }
 
 resource "aws_security_group" "sg_portail" {
