@@ -172,13 +172,15 @@ resource "aws_rds_cluster" "kasmdb" {
   ]
 }
 
-resource "aws_rds_cluster" "kasmdb12" {
-  cluster_identifier = "kasmdb12"
+resource "aws_db_instance" "kasmdb12" {
+  allocated_storage    = 10
+  identifier = "kasmdb12"
+  instance_class = "db.t3.micro"
   engine             = "postgres"
   engine_version     = "12.11"
-  database_name      = "kasmdbnotused"
-  master_username    = "root"
-  master_password    = random_password.databaseroot.result
+  db_name      = "kasmdbnotused"
+  username    = "root"
+  password    = random_password.databaseroot.result
   db_subnet_group_name = aws_db_subnet_group.kasmdb.name
   skip_final_snapshot = true
   final_snapshot_identifier = "kasmdb-snapshot"
