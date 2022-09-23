@@ -16,16 +16,3 @@ module "kasmweb" {
     aws_route53_zone.private
   ]
 }
-
-output "ksm_install" {
-  value = module.kasmweb.dbinfo
-}
-
-data "aws_availability_zones" "zone" {
-  state = "available"
-}
-
-output "zones" {
-  value = data.aws_availability_zones.zone
-  
-}
