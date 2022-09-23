@@ -150,7 +150,7 @@ resource "aws_rds_cluster" "kasmdb" {
   cluster_identifier = "kasmdb"
   engine             = "aurora-postgresql"
   engine_mode        = "provisioned"
-  engine_version     = "14.3"
+  engine_version     = "12.11"
   database_name      = "kasm"
   master_username    = "root"
   master_password    = random_password.databaseroot.result
