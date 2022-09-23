@@ -157,11 +157,7 @@ resource "aws_rds_cluster" "kasmdb" {
   db_subnet_group_name = aws_db_subnet_group.kasmdb.name
   skip_final_snapshot = true
   final_snapshot_identifier = "kasmdb-snapshot"
-  enabled_cloudwatch_logs_exports = [
-    "postgresql",
-    "error",
-    "general"
-  ]
+  enabled_cloudwatch_logs_exports = "postgresql"
 
   network_type = "IPV4"
   apply_immediately = true
