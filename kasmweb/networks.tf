@@ -94,3 +94,11 @@ resource "aws_db_subnet_group" "kasmdb" {
     Name = "DB Subnet Kasmweb"
   }
 }
+
+resource "aws_elasticache_subnet_group" "kasm_subnet_group" {
+  name       = "tf-kasmweb-cache-subnet"
+  subnet_ids = aws_subnet.sc_kasm_db.*.id
+  tags = {
+    Name = "Redis Subnet Kasmweb"
+  }
+}
