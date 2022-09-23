@@ -26,6 +26,6 @@ resource "aws_route53_record" "wabcname" {
   type    = "CNAME"
   ttl     = 300
   records = [
-    aws_route53_record.wab.name,
+    aws_route53_record.wab.fqdn,
   ]
 }
