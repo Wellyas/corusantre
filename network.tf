@@ -156,13 +156,6 @@ resource "aws_security_group" "sg_dmz" {
     Name  = "Security Groupe - DMZ"
   }
 
-  ingress {
-    description = "SSH from All"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   egress {
     from_port        = 80
     to_port          = 80
@@ -173,20 +166,6 @@ resource "aws_security_group" "sg_dmz" {
   egress {
     from_port        = 443
     to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-  egress {
-    from_port        = 53
-    to_port          = 53
-    protocol         = "udp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-  egress {
-    from_port        = 53
-    to_port          = 53
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]

@@ -155,6 +155,7 @@ resource "aws_rds_cluster" "kasmdb" {
   master_username    = "root"
   master_password    = random_password.databaseroot.result
   db_subnet_group_name = aws_db_subnet_group.kasmdb.name
+  skip_final_snapshot = true
 
   network_type = "IPV4"
   apply_immediately = true
