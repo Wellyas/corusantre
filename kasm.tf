@@ -30,3 +30,7 @@ output "appsh" {
   value = module.kasmweb.appinstall
   sensitive = true
 }
+
+output "debug" {
+  value = module.kasmweb.debug
+}

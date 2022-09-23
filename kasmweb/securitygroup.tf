@@ -54,7 +54,7 @@ resource "aws_security_group" "kasm-webapp-sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["${aws_subnet.sc_kasm_agent.cidr_block}"]
+    cidr_blocks = [aws_subnet.sc_kasm_agent.cidr_block]
   }
 
   egress {
@@ -302,4 +302,8 @@ resource "aws_security_group" "kasm-db-sg" {
   #  protocol    = -1
   #  cidr_blocks = ["0.0.0.0/0"] 
   #}
+}
+
+output "debug" {
+  value = aws_subnet.sc_kasm_db.*.cidr_block
 }
