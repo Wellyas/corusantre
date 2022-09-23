@@ -175,7 +175,7 @@ resource "aws_rds_cluster" "kasmdb" {
 resource "aws_rds_cluster" "kasmdb12" {
   cluster_identifier = "kasmdb12"
   engine             = "postgres"
-  engine_version     = "12.11-R1"
+  engine_version     = "12.11"
   database_name      = "kasmdbnotused"
   master_username    = "root"
   master_password    = random_password.databaseroot.result
