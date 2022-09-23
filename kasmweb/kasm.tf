@@ -157,7 +157,7 @@ resource "aws_rds_cluster" "kasmdb" {
   db_subnet_group_name = aws_db_subnet_group.kasmdb.name
   skip_final_snapshot = true
   final_snapshot_identifier = "kasmdb-snapshot"
-  enabled_cloudwatch_logs_exports = "postgresql"
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 
   network_type = "IPV4"
   apply_immediately = true
@@ -200,5 +200,5 @@ output "dbinfo" {
 }
 
 output "appinstall" {
-  value = "kasm_release/install.sh -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R \"\" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
+  value = "kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R \"\" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
 }
