@@ -18,5 +18,5 @@ module "kasmweb" {
 }
 
 output "dbinfo" {
-  value = module.kaswmeb.dbinfo
+  value = module.kasmweb.dbinfo
 }
