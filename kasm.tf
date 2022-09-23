@@ -16,3 +16,7 @@ module "kasmweb" {
     aws_route53_zone.private
   ]
 }
+
+output "dbinfo" {
+  value = module.kaswmeb.output.dbinfo
+}
