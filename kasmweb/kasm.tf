@@ -162,7 +162,7 @@ resource "aws_rds_cluster" "kasmdb" {
   apply_immediately = true
 
   serverlessv2_scaling_configuration {
-    max_capacity = 1.0
+    max_capacity = 2.0
     min_capacity = 0.5
   }
 
@@ -199,5 +199,5 @@ output "dbinfo" {
 }
 
 output "appinstall" {
-  value = "kasm_release/install.sh -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R ${random_password.redis.result} -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
+  value = "kasm_release/install.sh -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R \"\" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
 }
