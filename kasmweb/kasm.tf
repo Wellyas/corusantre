@@ -172,6 +172,26 @@ resource "aws_rds_cluster" "kasmdb" {
   ]
 }
 
+resource "aws_rds_cluster" "kasmdb12" {
+  cluster_identifier = "kasmdb12"
+  engine             = "postgresql"
+  engine_version     = "12.11"
+  database_name      = "kasmdbnotused"
+  master_username    = "root"
+  master_password    = random_password.databaseroot.result
+  db_subnet_group_name = aws_db_subnet_group.kasmdb.name
+  skip_final_snapshot = true
+  final_snapshot_identifier = "kasmdb-snapshot"
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+
+  network_type = "IPV4"
+  apply_immediately = true
+
+  vpc_security_group_ids = [
+    aws_security_group.kasm-db-sg.id
+  ]
+}
+
 resource "aws_rds_cluster_instance" "kasmdb" {
   cluster_identifier = aws_rds_cluster.kasmdb.id
   instance_class     = "db.serverless"
