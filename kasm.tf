@@ -25,3 +25,8 @@ output "dbsh" {
   value = module.kasmweb.installdb
   sensitive = true
 }
+
+output "appsh" {
+  value = module.kasmweb.appinstall
+  sensitive = true
+}

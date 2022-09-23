@@ -197,3 +197,7 @@ resource "aws_elasticache_cluster" "kasmredis" {
 output "dbinfo" {
   value = aws_rds_cluster.kasmdb.endpoint
 }
+
+output "appinstall" {
+  value = "kasm_release/install.sh -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpointaws_instance.kasm-db.private_ip} -Q ${random_password.database.result} -R ${random_password.redis.result} -o ${aws_elasticache_cluster.kasmredis.endpoint}
+}
