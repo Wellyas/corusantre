@@ -128,6 +128,17 @@ resource "aws_route53_record" "kasm-web-app" {
   ttl     = 300
   records = [aws_instance.kasm-web-app.private_ip]
 }
+
+resource "aws_route53_record" "kasm-cname" {
+  count = var.private_zone_id != "" ? 1 : 0 
+  zone_id = var.private_zone_id
+  name    = "vdi"
+  type    = "CNAME"
+  ttl     = 300
+  records = [
+    aws_route53_record.kasm-web-app.fqdn
+  ]
+}
 output "install" {
   value = "kasm_release/install.sh -S db -e -Q ${random_password.database.result} -R ${random_password.redis.result} -U ${random_password.user.result} -P ${random_password.admin.result} -M ${random_password.manager.result}"
 }
