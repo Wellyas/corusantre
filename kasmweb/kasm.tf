@@ -151,7 +151,7 @@ resource "aws_rds_cluster" "kasmdb" {
   engine             = "aurora-postgresql"
   engine_mode        = "provisioned"
   engine_version     = "14.3"
-  database_name      = "db"
+  database_name      = "kasmdbnotused"
   master_username    = "root"
   master_password    = random_password.databaseroot.result
   db_subnet_group_name = aws_db_subnet_group.kasmdb.name
