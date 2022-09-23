@@ -2,8 +2,7 @@ resource "aws_vpn_gateway" "sideracloud_vpngw" {
   vpc_id = aws_vpc.sidera_cloud.id
 
   tags = {
-    Name = "SideraCloudVPN"
-    Owner = "Taleb E."
+    Name  = "SideraCloudVPN"
   }
 }
 
@@ -12,8 +11,7 @@ resource "aws_customer_gateway" "sidera_fo" {
   ip_address = "192.93.158.174"
   type       = "ipsec.1"
   tags = {
-    Name = "GW-CCO-FRONT-OFFICE"
-    Owner = "Taleb E."
+    Name  = "GW-CCO-FRONT-OFFICE"
   }
 }
 resource "aws_customer_gateway" "sidera_bo" {
@@ -21,8 +19,7 @@ resource "aws_customer_gateway" "sidera_bo" {
   ip_address = "192.93.158.179"
   type       = "ipsec.1"
   tags = {
-    Name = "GW-CCO-BACK-OFFICE"
-    Owner = "Taleb E."
+    Name  = "GW-CCO-BACK-OFFICE"
   }
 }
 resource "aws_customer_gateway" "sidera_oam" {
@@ -30,8 +27,7 @@ resource "aws_customer_gateway" "sidera_oam" {
   ip_address = "192.93.158.180"
   type       = "ipsec.1"
   tags = {
-    Name = "GW-CCO-OAM"
-    Owner = "Taleb E."
+    Name  = "GW-CCO-OAM"
   }
 }
 
@@ -45,42 +41,41 @@ resource "aws_vpn_connection" "vpnoam" {
   #tunnel1_preshared_key = "Azerty123456789"
   tunnel1_preshared_key = random_password.pskOAM.result
 
-  tunnel1_phase1_dh_group_numbers = [20]
-  tunnel1_phase1_encryption_algorithms= ["AES256-GCM-16"]
-  tunnel1_phase1_integrity_algorithms= ["SHA2-256"]
-  tunnel1_phase1_lifetime_seconds= 28800
-  tunnel1_inside_cidr = "169.254.67.56/30"
+  tunnel1_phase1_dh_group_numbers      = [20]
+  tunnel1_phase1_encryption_algorithms = ["AES256-GCM-16"]
+  tunnel1_phase1_integrity_algorithms  = ["SHA2-256"]
+  tunnel1_phase1_lifetime_seconds      = 28800
+  tunnel1_inside_cidr                  = "169.254.67.56/30"
 
-  tunnel1_phase2_dh_group_numbers= [20]
-  tunnel1_phase2_encryption_algorithms= ["AES256-GCM-16"]
-  tunnel1_phase2_integrity_algorithms= ["SHA2-256"]
-  tunnel1_phase2_lifetime_seconds= 3600
+  tunnel1_phase2_dh_group_numbers      = [20]
+  tunnel1_phase2_encryption_algorithms = ["AES256-GCM-16"]
+  tunnel1_phase2_integrity_algorithms  = ["SHA2-256"]
+  tunnel1_phase2_lifetime_seconds      = 3600
 
-  tunnel1_startup_action= "start"
-  
+  tunnel1_startup_action = "start"
+
   #local_ipv4_network_cidr = "10.135.190.0/23"
   #remote_ipv4_network_cidr = aws_vpc.sidera_cloud.cidr_block
 
   #local_ipv4_network_cidr = "169.254.67.58/32"
   #remote_ipv4_network_cidr = "169.254.67.57/32"
 
-  local_ipv4_network_cidr = "169.254.67.56/29"
+  local_ipv4_network_cidr  = "169.254.67.56/29"
   remote_ipv4_network_cidr = "169.254.67.56/29"
 
-  tunnel2_ike_versions = ["ikev2"]
-  tunnel2_phase1_dh_group_numbers = [20]
-  tunnel2_phase1_encryption_algorithms= ["AES256-GCM-16"]
-  tunnel2_phase1_integrity_algorithms= ["SHA2-256"]
-  tunnel2_phase1_lifetime_seconds= 28800
-  tunnel2_inside_cidr = "169.254.67.60/30"
-  tunnel2_phase2_dh_group_numbers= [20]
-  tunnel2_phase2_encryption_algorithms= ["AES256-GCM-16"]
-  tunnel2_phase2_integrity_algorithms= ["SHA2-256"]
-  tunnel2_phase2_lifetime_seconds= 3600
+  tunnel2_ike_versions                 = ["ikev2"]
+  tunnel2_phase1_dh_group_numbers      = [20]
+  tunnel2_phase1_encryption_algorithms = ["AES256-GCM-16"]
+  tunnel2_phase1_integrity_algorithms  = ["SHA2-256"]
+  tunnel2_phase1_lifetime_seconds      = 28800
+  tunnel2_inside_cidr                  = "169.254.67.60/30"
+  tunnel2_phase2_dh_group_numbers      = [20]
+  tunnel2_phase2_encryption_algorithms = ["AES256-GCM-16"]
+  tunnel2_phase2_integrity_algorithms  = ["SHA2-256"]
+  tunnel2_phase2_lifetime_seconds      = 3600
 
   tags = {
-    Name = "VPNSideraOnPremiseOAM"
-    Owner = "Taleb E."
+    Name  = "VPNSideraOnPremiseOAM"
   }
 
 
@@ -98,11 +93,11 @@ resource "aws_vpn_gateway_route_propagation" "sideraOAM" {
 }
 
 resource "aws_vpn_connection_route" "admin" {
-  destination_cidr_block = "10.135.190.0/23"
+  destination_cidr_block = "10.135.0.0/16"
   vpn_connection_id      = aws_vpn_connection.vpnoam.id
 }
 
 output "vpnOAMInfo" {
-  value = aws_vpn_connection.vpnoam
+  value     = aws_vpn_connection.vpnoam
   sensitive = true
 }

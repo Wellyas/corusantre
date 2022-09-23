@@ -5,29 +5,30 @@ resource "aws_vpc" "sidera_cloud" {
 
   tags = {
     Name  = "Sidera Cloud"
-    Owner = "Taleb E."
   }
 }
-
+resource "aws_vpc_ipv4_cidr_block_association" "secondary_cidr" {
+  vpc_id     = aws_vpc.sidera_cloud.id
+  cidr_block = "10.201.0.0/16"
+}
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.sidera_cloud.id
 
   tags = {
-    Name = "SC Internet Gateway"
-    Owner = "Taleb E."
+    Name  = "SC Internet Gateway"
   }
 }
 
 resource "aws_subnet" "sc_portail" {
   vpc_id     = aws_vpc.sidera_cloud.id
-  cidr_block = "10.137.30.0/24"
+  cidr_block = "10.137.35.0/24"
 
   tags = {
     Name  = "Zone Portail"
-    Owner = "Taleb E."
   }
 }
+
 
 resource "aws_subnet" "sc_dmz" {
   vpc_id     = aws_vpc.sidera_cloud.id
@@ -35,7 +36,6 @@ resource "aws_subnet" "sc_dmz" {
 
   tags = {
     Name  = "Zone DMZ"
-    Owner = "Taleb E."
   }
 }
 resource "aws_route_table" "dmz" {
@@ -63,58 +63,89 @@ resource "aws_subnet" "sc_siem" {
 
   tags = {
     Name  = "Zone SIEM"
-    Owner = "Taleb E."
   }
 }
-
+resource "aws_subnet" "sc_access" {
+  vpc_id     = aws_vpc.sidera_cloud.id
+  cidr_block        = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, 7)
+  availability_zone = "${data.aws_region.current.name}a"
+  tags = {
+    Name  = "Zone Access"
+  }
+}
 /* resource "aws_subnet" "sc_adm_portail" {
   vpc_id     = aws_vpc.sidera_cloud.id
   cidr_block = "10.137.30.0/24"
 
   tags = {
     Name  = "Zone Portail ADM"
-    Owner = "Taleb E."
   }
 } */
+resource "aws_security_group" "sg_access" {
+  name   = "ZoneAccess ACL"
+  vpc_id = aws_vpc.sidera_cloud.id
+  tags = {
+    Name  = "Security Groupe - Access"
+  }
+
+  ingress {
+    description = "TLS from Sidera"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
+  }
+  ingress {
+    description = "TLS from Sidera"
+    from_port   = 3128
+    to_port     = 3128
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
+  }
+  ingress {
+    description = "SSH from Sidera"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
+  }
+}
 
 resource "aws_security_group" "sg_portail" {
-  name = "ZonePortail ACL"
+  name   = "ZonePortail ACL"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
     Name  = "Security Groupe - Portail"
-    Owner = "Taleb E."
   }
 
   ingress {
-    description      = "TLS from Sidera"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpn_connection_route.admin.destination_cidr_block]
+    description = "TLS from Sidera"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
   }
   ingress {
-    description      = "SSH from Sidera"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpn_connection_route.admin.destination_cidr_block]
+    description = "SSH from Sidera"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block]
   }
-
 }
 resource "aws_security_group" "sg_dmz" {
-  name = "ZoneDMZ ACL"
+  name   = "ZoneDMZ ACL"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
     Name  = "Security Groupe - DMZ"
-    Owner = "Taleb E."
   }
 
   ingress {
-    description      = "SSH from All"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    description = "SSH from All"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     from_port        = 80

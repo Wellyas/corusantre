@@ -15,13 +15,12 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_network_interface" "xsoar_net0" {
-  subnet_id   = aws_subnet.sc_dmz.id
+  subnet_id = aws_subnet.sc_dmz.id
 
   security_groups = [aws_security_group.sg_dmz.id]
 
   tags = {
-    Name = "ProdInterface"
-    Owner = "Taleb E."
+    Name  = "ProdInterface"
   }
 }
 
@@ -30,17 +29,16 @@ resource "aws_network_interface" "xsoar_net0" {
 
   tags = {
     Name = "AdmInterface"
-    Owner = "Taleb E."
   }
 } */
 
-resource "aws_eip" "xsoar_eip" {
-  vpc                       = true
-  network_interface         = aws_network_interface.xsoar_net0.id
+/* resource "aws_eip" "xsoar_eip" {
+  vpc               = true
+  network_interface = aws_network_interface.xsoar_net0.id
   depends_on = [
     aws_network_interface.xsoar_net0
   ]
-}
+} */
 
 resource "aws_instance" "xsoar" {
   #Ubuntu 20.04
@@ -50,14 +48,14 @@ resource "aws_instance" "xsoar" {
   #Amazon Linux
   #ami           = "ami-0f5094faf16f004eb"
   #Xsoar MarketPlace
-/*   ami           = "ami-03d1e9fd22550631b"
+  /*   ami           = "ami-03d1e9fd22550631b"
   instance_type = "c5.2xlarge" */
 
   network_interface {
     network_interface_id = aws_network_interface.xsoar_net0.id
     device_index         = 0
   }
-/*   network_interface {
+  /*   network_interface {
     network_interface_id = aws_network_interface.xsoar_net1.id
     device_index         = 1
   } */
@@ -66,19 +64,17 @@ resource "aws_instance" "xsoar" {
 
 
   tags = {
-    Name = "sidazudemmst01t"
-    Owner = "Taleb E."
+    Name  = "sidazudemmst01t"
   }
 }
 
 resource "aws_network_interface" "squid_net0" {
-  subnet_id   = aws_subnet.sc_portail.id
+  subnet_id = aws_subnet.sc_portail.id
 
   security_groups = [aws_security_group.sg_portail.id]
 
   tags = {
-    Name = "ProdInterfaceSquid"
-    Owner = "Taleb E."
+    Name  = "ProdInterfaceSquid"
   }
 }
 resource "aws_instance" "squid" {
@@ -96,13 +92,19 @@ resource "aws_instance" "squid" {
 
 
   tags = {
-    Name = "sidazuboxsqd01t"
-    Owner = "Taleb E."
+    Name  = "sidazuboxsqd01t"
   }
+}
+resource "aws_route53_record" "squid" {
+  zone_id = aws_route53_zone.private.zone_id
+  name    = aws_instance.squid.tags.Name
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.squid.private_ip]
 }
 
 output "soar_url" {
-  value = "https://${aws_instance.xsoar.public_ip}"
+  value       = "https://${aws_instance.xsoar.public_ip}"
   description = "Url d'acces pour le SOAR"
   depends_on = [
     aws_instance.xsoar

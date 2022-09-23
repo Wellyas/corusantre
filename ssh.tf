@@ -24,15 +24,15 @@ resource "local_file" "ssh_pub" {
 } */
 
 resource "aws_key_pair" "ssh" {
-  key_name = "terraform-deployer"
+  key_name   = "terraform-deployer"
   public_key = tls_private_key.ssh_key.public_key_openssh
 }
 
 
 output "ssh_privkey" {
-  value = tls_private_key.ssh_key.private_key_openssh
+  value       = tls_private_key.ssh_key.private_key_openssh
   description = "Credentials infos "
-  sensitive = true
+  sensitive   = true
   depends_on = [
     tls_private_key.ssh_key
   ]

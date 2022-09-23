@@ -1,10 +1,10 @@
 terraform {
   cloud {
-      organization = "eliasmtaleb"
+    organization = "eliasmtaleb"
 
-      workspaces {
-          name = "SideraCloud"
-      }
+    workspaces {
+      name = "SideraCloud"
+    }
   }
 }
 
@@ -21,6 +21,14 @@ terraform {
 
 provider "aws" {
   region = "eu-west-3"
+  default_tags {
+    tags = {
+      Owner = "Taleb E."
+      Environment = "Preprod"
+      Projet = "Cloudification"
+      DeployedBy = "Terraform"
+    }
+  }
 }
 
 data "aws_region" "current" {}
