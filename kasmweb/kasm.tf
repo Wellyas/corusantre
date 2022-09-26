@@ -31,7 +31,8 @@ resource "aws_instance" "kasm-web-app" {
                 sleep 5
               done
               echo "DB is alive"
-              bash kasm_release/install.sh -S app -e -z ${var.zone_name} -q "${aws_instance.kasm-db.private_ip}" -Q ${random_password.database.result} -R ${random_password.redis.result}
+              #bash kasm_release/install.sh -S app -e -z ${var.zone_name} -q "${aws_instance.kasm-db.private_ip}" -Q ${random_password.database.result} -R ${random_password.redis.result}
+              bash kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R "" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}
               EOF
   tags = {
     Name  = "sidawsksmweb01p"
@@ -222,5 +223,5 @@ output "dbinfo" {
 }
 
 output "appinstall" {
-  value = "kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R \"\" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
+  value = "kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R "" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
 }
