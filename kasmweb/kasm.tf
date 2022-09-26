@@ -223,5 +223,5 @@ output "dbinfo" {
 }
 
 output "appinstall" {
-  value = "kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R "" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
+  value = "kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R '' -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
 }
