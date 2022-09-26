@@ -24,7 +24,7 @@ resource "aws_security_group" "kasm-webapp-sg" {
   vpc_id = data.aws_vpc.vpc.id
 
   depends_on = [
-    aws_subnet.sc_kasm_db
+    aws_subnet.sc_kasm_db,
     aws_subnet.sc_kasm_lb
   ]
 
