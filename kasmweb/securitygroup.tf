@@ -4,6 +4,11 @@ data "dns_a_record_set" "kasmweb_site" {
   host = "kasm-static-content.s3.amazonaws.com" 
 }
 
+data "dns_a_record_set" "kasmweb_filter" {
+  #host = module.url_build.host
+  host = "filter.kasmweb.com" 
+}
+
 data "dns_a_record_set" "registry_docker" {
   #host = module.url_build.host
   host = "registry.docker.io"
@@ -109,6 +114,13 @@ resource "aws_security_group" "kasm-webapp-sg" {
     //cidr_blocks = ["0.0.0.0/0"]
     cidr_blocks = aws_subnet.sc_kasm_db.*.cidr_block
     //cidr_blocks = [aws_subnet.sc_kasm_db.*.cidr_block]
+  }
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [for x in data.dns_a_record_set.kasmweb_filter.addrs : "${x}/32"] 
+
   }
   #egress {
   #  from_port   = 0
