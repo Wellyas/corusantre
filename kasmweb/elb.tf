@@ -58,3 +58,6 @@ resource "aws_route53_record" "kasm-route53-elb-record" {
 output "lb_dnsname" {
     value = aws_lb.kasm-alb.dns_name
 }
+output "debug" {
+    value = aws_lb.kasm-alb.subnet_mapping
+}
