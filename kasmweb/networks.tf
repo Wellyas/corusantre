@@ -75,11 +75,12 @@ resource "aws_route_table_association" "ks_sweb" {
   subnet_id      = aws_subnet.sc_kasm_web.id
   route_table_id = aws_route_table.dmz.id
 }
-/* resource "aws_route_table_association" "ks_sdb" {
-  subnet_id      = aws_subnet.sc_kasm_db.id
+resource "aws_route_table_association" "ks_sdb" {
+  count = length(aws_subnet.sc_kasm_db)
+  subnet_id      = aws_subnet.sc_kasm_db[count.index].id
   //route_table_id = aws_route_table.dmz.id
   route_table_id = aws_route_table.r.id
-} */
+}
 resource "aws_route_table_association" "ks_spub" {
   subnet_id      = aws_subnet.sc_kasm_pub.id
   //route_table_id = aws_route_table.dmz.id
