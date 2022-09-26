@@ -11,6 +11,7 @@ resource "aws_flow_log" "kaslog" {
 
 resource "aws_cloudwatch_log_group" "kasmlog" {
   name = "kasmlog"
+  retention_in_days= 7
 }
 
 resource "aws_iam_role" "kasmlog" {
