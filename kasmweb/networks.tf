@@ -32,6 +32,7 @@ resource "aws_subnet" "sc_kasm_web" {
   vpc_id     = data.aws_vpc.vpc.id
   cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 2)
   map_public_ip_on_launch = true
+  availability_zone = data.aws_availability_zones.zone.names[0]
 
   tags = {
     Name  = "Zone Kasmweb Web"
