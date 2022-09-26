@@ -17,6 +17,14 @@ resource "aws_subnet" "sc_kasm_db" {
     Name  = "Zone Kasmweb DB ${data.aws_availability_zones.zone.names[count.index]}"
   }
 }
+resource "aws_subnet" "sc_kasm_db2" {
+  vpc_id     = data.aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 10)
+
+  tags = {
+    Name  = "Zone Kasmweb DB 2"
+  }
+}
 resource "aws_subnet" "sc_kasm_web" {
   vpc_id     = data.aws_vpc.vpc.id
   cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 2)
@@ -76,9 +84,11 @@ resource "aws_route_table_association" "ks_sweb" {
   route_table_id = aws_route_table.dmz.id
 }
 resource "aws_route_table_association" "ks_sdb" {
-  count = length(aws_subnet.sc_kasm_db)
-  subnet_id      = aws_subnet.sc_kasm_db[count.index].id
+  //count = length(aws_subnet.sc_kasm_db)
+  //subnet_id      = aws_subnet.sc_kasm_db[count.index].id
   //route_table_id = aws_route_table.dmz.id
+
+  subnet_id      = aws_subnet.sc_kasm_db2.id
   route_table_id = aws_route_table.r.id
 }
 resource "aws_route_table_association" "ks_spub" {

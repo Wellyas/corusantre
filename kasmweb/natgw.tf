@@ -1,5 +1,5 @@
 resource "aws_nat_gateway" "gw" {
-  allocation_id = "${aws_eip.nat_gateway_eip.id}"
+  allocation_id = aws_eip.nat_gateway_eip.id
   subnet_id     = aws_subnet.sc_kasm_pub.id
 
   tags = {

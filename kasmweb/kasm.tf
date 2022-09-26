@@ -42,7 +42,7 @@ resource "aws_instance" "kasm-db" {
   ami           = var.ec2_ami
   instance_type = var.db_instance_type
   vpc_security_group_ids = [aws_security_group.kasm-db-sg.id]
-  subnet_id = aws_subnet.sc_kasm_db[0].id
+  subnet_id = aws_subnet.sc_kasm_db2.id
   key_name                    = var.key_name
   associate_public_ip_address = false
 
