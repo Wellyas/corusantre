@@ -26,7 +26,8 @@ resource "aws_instance" "kasm-web-app" {
               wget ${var.kasm_build}
               tar xvf kasm_*.tar.gz
               echo "Checking for Kasm DB..."
-              while ! nc -w 1  -z ${aws_instance.kasm-db.private_ip} 5432; do
+              #while ! nc -w 1  -z ${aws_instance.kasm-db.private_ip} 5432; do
+              while ! nc -w 1  -z ${aws_rds_cluster.kasmdb.endpoint} 5432; do
                 echo "Not Ready..."
                 sleep 5
               done
@@ -100,7 +101,7 @@ resource "aws_instance" "kasm-agent" {
               bash kasm_release/install.sh -S agent -e  -p $PRIVATE_IP -m ${aws_instance.kasm-web-app.private_ip} -M ${random_password.manager.result}
               EOF
   tags = {
-    Name  = "${format("sidazuksmapp%02sp",count.index+1)}"
+    Name  = "${format("sidawsksmapp%02sp",count.index+1)}"
   }
 }
 
