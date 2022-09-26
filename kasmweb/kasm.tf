@@ -7,7 +7,7 @@ resource "aws_instance" "kasm-web-app" {
   associate_public_ip_address = true
 
   depends_on = [
-    aws_instance.kasm-db
+    aws_rds_cluster.kasmdb
   ]
 
   root_block_device {
@@ -26,13 +26,11 @@ resource "aws_instance" "kasm-web-app" {
               wget ${var.kasm_build}
               tar xvf kasm_*.tar.gz
               echo "Checking for Kasm DB..."
-              #while ! nc -w 1  -z ${aws_instance.kasm-db.private_ip} 5432; do
               while ! nc -w 1  -z ${aws_rds_cluster.kasmdb.endpoint} 5432; do
                 echo "Not Ready..."
                 sleep 5
               done
               echo "DB is alive"
-              #bash kasm_release/install.sh -S app -e -z ${var.zone_name} -q "${aws_instance.kasm-db.private_ip}" -Q ${random_password.database.result} -R ${random_password.redis.result}
               bash kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R "" -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}
               EOF
   tags = {
@@ -40,7 +38,7 @@ resource "aws_instance" "kasm-web-app" {
   }
 }
 
-resource "aws_instance" "kasm-db" {
+/* resource "aws_instance" "kasm-db" {
   ami           = var.ec2_ami
   instance_type = var.db_instance_type
   vpc_security_group_ids = [aws_security_group.kasm-db-sg.id]
@@ -68,7 +66,7 @@ resource "aws_instance" "kasm-db" {
   tags = {
     Name  = "sidawsksmbdd01p"
   }
-}
+} */
 
 resource "aws_instance" "kasm-agent" {
   count                       = "${var.num_agents}"
@@ -105,14 +103,14 @@ resource "aws_instance" "kasm-agent" {
   }
 }
 
-resource "aws_route53_record" "kasm-db" {
+/* resource "aws_route53_record" "kasm-db" {
   count = var.private_zone_id != "" ? 1 : 0 
   zone_id = var.private_zone_id
   name    = aws_instance.kasm-db.tags.Name
   type    = "A"
   ttl     = 300
   records = [aws_instance.kasm-db.private_ip]
-}
+} */
 resource "aws_route53_record" "kasm-agent" {
   count = var.private_zone_id != "" ? length(aws_instance.kasm-agent) : 0 
   zone_id = var.private_zone_id
@@ -175,6 +173,7 @@ resource "aws_rds_cluster" "kasmdb" {
 }
 
 resource "aws_db_instance" "kasmdb12" {
+  count = 0 
   allocated_storage    = 10
   identifier = "kasmdb12"
   instance_class = "db.t3.micro"

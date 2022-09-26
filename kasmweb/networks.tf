@@ -17,12 +17,15 @@ resource "aws_subnet" "sc_kasm_db" {
     Name  = "Zone Kasmweb DB ${data.aws_availability_zones.zone.names[count.index]}"
   }
 }
-resource "aws_subnet" "sc_kasm_db2" {
+resource "aws_subnet" "sc_kasm_lb" {
   vpc_id     = data.aws_vpc.vpc.id
-  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 11)
+  count = 2
+  private_dns_hostname_type_on_launch = "resource-name"
+  availability_zone = data.aws_availability_zones.zone.names[count.index]
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+11)
 
   tags = {
-    Name  = "Zone Kasmweb DB 2"
+    Name  = "Zone Kasmweb LB ${data.aws_availability_zones.zone.names[count.index]}"
   }
 }
 resource "aws_subnet" "sc_kasm_web" {
@@ -83,14 +86,7 @@ resource "aws_route_table_association" "ks_sweb" {
   subnet_id      = aws_subnet.sc_kasm_web.id
   route_table_id = aws_route_table.dmz.id
 }
-resource "aws_route_table_association" "ks_sdb" {
-  //count = length(aws_subnet.sc_kasm_db)
-  //subnet_id      = aws_subnet.sc_kasm_db[count.index].id
-  //route_table_id = aws_route_table.dmz.id
 
-  subnet_id      = aws_subnet.sc_kasm_db2.id
-  route_table_id = aws_route_table.r.id
-}
 resource "aws_route_table_association" "ks_spub" {
   subnet_id      = aws_subnet.sc_kasm_pub.id
   route_table_id = aws_route_table.dmz.id
