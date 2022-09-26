@@ -1,6 +1,6 @@
-resource "aws_flow_log" "kaslog" {
-  iam_role_arn    = aws_iam_role.kasmlog.arn
-  log_destination = aws_cloudwatch_log_group.kasmlog.arn
+resource "aws_flow_log" "corusant" {
+  iam_role_arn    = aws_iam_role.corusant.arn
+  log_destination = aws_cloudwatch_log_group.corusant.arn
   traffic_type    = "ALL"
   vpc_id          = data.aws_vpc.vpc.id
 
@@ -9,13 +9,13 @@ resource "aws_flow_log" "kaslog" {
   //subnet_id = aws_subnet.sc_kasm_db2.id
 }
 
-resource "aws_cloudwatch_log_group" "kasmlog" {
-  name = "kasmlog"
+resource "aws_cloudwatch_log_group" "corusant" {
+  name = "corusant"
   retention_in_days= 7
 }
 
-resource "aws_iam_role" "kasmlog" {
-  name = "kasmlog"
+resource "aws_iam_role" "corusant" {
+  name = "corusant"
 
   assume_role_policy = <<EOF
 {
@@ -34,9 +34,9 @@ resource "aws_iam_role" "kasmlog" {
 EOF
 }
 
-resource "aws_iam_role_policy" "kasmlog" {
-  name = "kasmlog"
-  role = aws_iam_role.kasmlog.id
+resource "aws_iam_role_policy" "corusant" {
+  name = "corusant"
+  role = aws_iam_role.corusant.id
 
   policy = <<EOF
 {
