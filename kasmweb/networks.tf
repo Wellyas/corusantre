@@ -19,7 +19,7 @@ resource "aws_subnet" "sc_kasm_db" {
 }
 resource "aws_subnet" "sc_kasm_db2" {
   vpc_id     = data.aws_vpc.vpc.id
-  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 10)
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 11)
 
   tags = {
     Name  = "Zone Kasmweb DB 2"
