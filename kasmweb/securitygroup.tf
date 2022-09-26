@@ -25,6 +25,7 @@ resource "aws_security_group" "kasm-webapp-sg" {
 
   depends_on = [
     aws_subnet.sc_kasm_db
+    aws_subnet.sc_kasm_lb
   ]
 
   ingress {
@@ -61,7 +62,14 @@ resource "aws_security_group" "kasm-webapp-sg" {
     protocol    = "tcp"
     cidr_blocks = [aws_subnet.sc_kasm_agent.cidr_block]
   }
-
+   ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    //cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = aws_subnet.sc_kasm_lb.*.cidr_block
+    //cidr_blocks = [aws_subnet.sc_kasm_db.*.cidr_block]
+  }
   egress {
     from_port   = 443
     to_port     = 443
@@ -261,7 +269,37 @@ resource "aws_security_group" "kasm-agent-sg" {
   #}
 }
 
+resource "aws_security_group" "kasm-default-elb-sg" {
+  name        = "ACL kasm-LoadBalancer"
+  description = "Allow access to webapps"
+  vpc_id = data.aws_vpc.vpc.id
 
+  depends_on = [
+    aws_subnet.sc_kasm_lb
+  ]
+
+  ingress {
+    description = "TLS from Sidera"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.ssh_access_cidr]
+  }
+  ingress {
+    description = "TLS from Allowed source"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = var.https_access_cidr
+  }
+  
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_subnet.sc_kasm_web.cidr_block]
+  }
+}
 
 resource "aws_security_group" "kasm-db-sg" {
   name        = "ACL kasm-db-access"
