@@ -364,7 +364,3 @@ resource "aws_security_group" "kasm-db-sg" {
     cidr_blocks = ["0.0.0.0/0"] 
   }
 }
-
-output "debug" {
-  value = aws_subnet.sc_kasm_db.*.cidr_block
-}
