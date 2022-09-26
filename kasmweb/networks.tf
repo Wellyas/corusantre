@@ -93,8 +93,8 @@ resource "aws_route_table_association" "ks_sdb" {
 }
 resource "aws_route_table_association" "ks_spub" {
   subnet_id      = aws_subnet.sc_kasm_pub.id
-  //route_table_id = aws_route_table.dmz.id
-  route_table_id = aws_route_table.r.id
+  route_table_id = aws_route_table.dmz.id
+  //route_table_id = aws_route_table.r.id
 }
 
 resource "aws_db_subnet_group" "kasmdb" {
