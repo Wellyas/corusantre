@@ -85,3 +85,30 @@ resource "aws_iam_group_policy" "marketplacesubs" {
 
   policy = data.aws_iam_policy_document.marketplacesubs.json
 }
+
+data "aws_iam_policy_document" "watchlog" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"  
+    ]
+    resources = [
+      "*",
+    ]
+  }
+
+  principals {
+      type        = "Service"
+      identifiers = ["vpc-flow-logs.amazonaws.com"]
+    }
+}
+
+resource "aws_iam_role" "logflow" {
+  name               = "instance_role"
+  path               = "/system/"
+  assume_role_policy = data.aws_iam_policy_document.watchlog.json
+}
