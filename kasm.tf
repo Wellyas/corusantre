@@ -32,5 +32,5 @@ output "appsh" {
 }
 
 output "debug" {
-  value = module.kasmweb.debug
+  value = module.kasmweb.arn_validation
 }
