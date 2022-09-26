@@ -9,6 +9,6 @@ resource "aws_acm_certificate" "cert" {
 
 output "arn_validation" {
   value = [
-    for dvo in aws_acm_certificate.cert.domain_validation_options : "${dvo.resource_record_name   dvo.resource_record_type dvo.resource_record_value}"
+    for dvo in aws_acm_certificate.cert.domain_validation_options : "${dvo.resource_record_name}   ${dvo.resource_record_type} ${dvo.resource_record_value}"
   ]
 }
