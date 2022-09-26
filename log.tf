@@ -2,7 +2,7 @@ resource "aws_flow_log" "corusant" {
   iam_role_arn    = aws_iam_role.corusant.arn
   log_destination = aws_cloudwatch_log_group.corusant.arn
   traffic_type    = "ALL"
-  vpc_id          = data.aws_vpc.vpc.id
+  vpc_id          = aws_vpc.sidera_cloud.id
 
   max_aggregation_interval = 60
 
