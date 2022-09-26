@@ -4,7 +4,7 @@ resource "aws_lb" "kasm-alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.kasm-default-elb-sg.id]
   subnets            = aws_subnet.sc_kasm_lb.*.id
-
+  preserve_host_header = true
 
 }
 
@@ -52,4 +52,9 @@ resource "aws_route53_record" "kasm-route53-elb-record" {
     zone_id                = aws_lb.kasm-alb.zone_id
     evaluate_target_health = true
   }
+}
+
+
+output "lb_dnsname" {
+    value = aws_lb.kasm-alb.dns_name
 }

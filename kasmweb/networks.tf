@@ -92,6 +92,12 @@ resource "aws_route_table_association" "ks_spub" {
   route_table_id = aws_route_table.dmz.id
   //route_table_id = aws_route_table.r.id
 }
+resource "aws_route_table_association" "ks_lb" {
+  count = length(aws_subnet.sc_kasm_lb)
+  subnet_id      = aws_subnet.sc_kasm_lb.*.id
+  route_table_id = aws_route_table.dmz.id
+  //route_table_id = aws_route_table.r.id
+}
 
 resource "aws_db_subnet_group" "kasmdb" {
   name       = "kasmdb"
