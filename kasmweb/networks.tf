@@ -94,7 +94,7 @@ resource "aws_route_table_association" "ks_spub" {
 }
 resource "aws_route_table_association" "ks_lb" {
   count = length(aws_subnet.sc_kasm_lb)
-  subnet_id      = aws_subnet.sc_kasm_lb.*.id
+  subnet_id      = aws_subnet.sc_kasm_lb[count.index].id
   route_table_id = aws_route_table.dmz.id
   //route_table_id = aws_route_table.r.id
 }
