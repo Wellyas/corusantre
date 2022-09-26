@@ -253,7 +253,7 @@ resource "aws_security_group" "kasm-agent-sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = concat([aws_subnet.sc_kasm_web.cidr_block],aws_subnet.sc_kasm_lb.*.cidr_blocks])
+    cidr_blocks = concat([aws_subnet.sc_kasm_web.cidr_block],aws_subnet.sc_kasm_lb.*.cidr_blocks)
   }
   egress {
     from_port   = 3128
