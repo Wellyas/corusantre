@@ -297,12 +297,12 @@ resource "aws_security_group" "kasm-db-sg" {
     protocol    = "tcp"
     cidr_blocks = [for x in data.dns_a_record_set.registry_docker_2.addrs : "${x}/32"] 
   }
-  #egress {
-  #  from_port   = 0
-  #  to_port     = 0
-  #  protocol    = -1
-  #  cidr_blocks = ["0.0.0.0/0"] 
-  #}
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"] 
+  }
 }
 
 output "debug" {
