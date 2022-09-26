@@ -20,7 +20,7 @@ resource "aws_network_interface" "xsoar_net0" {
   security_groups = [aws_security_group.sg_dmz.id]
 
   tags = {
-    Name  = "ProdInterface"
+    Name = "ProdInterface"
   }
 }
 
@@ -64,7 +64,7 @@ resource "aws_instance" "xsoar" {
 
 
   tags = {
-    Name  = "sidazudemmst01t"
+    Name = "sidazudemmst01t"
   }
 }
 
@@ -74,7 +74,7 @@ resource "aws_network_interface" "squid_net0" {
   security_groups = [aws_security_group.sg_portail.id]
 
   tags = {
-    Name  = "ProdInterfaceSquid"
+    Name = "ProdInterfaceSquid"
   }
 }
 resource "aws_instance" "squid" {
@@ -92,7 +92,7 @@ resource "aws_instance" "squid" {
 
 
   tags = {
-    Name  = "sidazuboxsqd01t"
+    Name = "sidazuboxsqd01t"
   }
 }
 resource "aws_route53_record" "squid" {

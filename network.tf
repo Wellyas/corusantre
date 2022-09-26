@@ -4,7 +4,7 @@ resource "aws_vpc" "sidera_cloud" {
   enable_dns_hostnames = true
 
   tags = {
-    Name  = "Sidera Cloud"
+    Name = "Sidera Cloud"
   }
 }
 resource "aws_vpc_ipv4_cidr_block_association" "secondary_cidr" {
@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.sidera_cloud.id
 
   tags = {
-    Name  = "SC Internet Gateway"
+    Name = "SC Internet Gateway"
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "sc_portail" {
   cidr_block = "10.137.35.0/24"
 
   tags = {
-    Name  = "Zone Portail"
+    Name = "Zone Portail"
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_subnet" "sc_dmz" {
   cidr_block = "10.137.40.0/24"
 
   tags = {
-    Name  = "Zone DMZ"
+    Name = "Zone DMZ"
   }
 }
 resource "aws_route_table" "dmz" {
@@ -62,15 +62,15 @@ resource "aws_subnet" "sc_siem" {
   cidr_block = "10.137.25.0/24"
 
   tags = {
-    Name  = "Zone SIEM"
+    Name = "Zone SIEM"
   }
 }
 resource "aws_subnet" "sc_access" {
-  vpc_id     = aws_vpc.sidera_cloud.id
+  vpc_id            = aws_vpc.sidera_cloud.id
   cidr_block        = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, 7)
   availability_zone = "${data.aws_region.current.name}a"
   tags = {
-    Name  = "Zone Access"
+    Name = "Zone Access"
   }
 }
 /* resource "aws_subnet" "sc_adm_portail" {
@@ -85,7 +85,7 @@ resource "aws_security_group" "sg_access" {
   name   = "ZoneAccess ACL"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
-    Name  = "Security Groupe - Access"
+    Name = "Security Groupe - Access"
   }
 
   ingress {
@@ -118,9 +118,9 @@ resource "aws_security_group" "sg_access" {
   }
   egress {
     description = "SSH FROM Wallix"
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = [
       aws_vpc.sidera_cloud.cidr_block
     ]
@@ -131,7 +131,7 @@ resource "aws_security_group" "sg_portail" {
   name   = "ZonePortail ACL"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
-    Name  = "Security Groupe - Portail"
+    Name = "Security Groupe - Portail"
   }
 
   ingress {
@@ -153,7 +153,7 @@ resource "aws_security_group" "sg_dmz" {
   name   = "ZoneDMZ ACL"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
-    Name  = "Security Groupe - DMZ"
+    Name = "Security Groupe - DMZ"
   }
 
   egress {

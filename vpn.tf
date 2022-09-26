@@ -2,7 +2,7 @@ resource "aws_vpn_gateway" "sideracloud_vpngw" {
   vpc_id = aws_vpc.sidera_cloud.id
 
   tags = {
-    Name  = "SideraCloudVPN"
+    Name = "SideraCloudVPN"
   }
 }
 
@@ -11,7 +11,7 @@ resource "aws_customer_gateway" "sidera_fo" {
   ip_address = "192.93.158.174"
   type       = "ipsec.1"
   tags = {
-    Name  = "GW-CCO-FRONT-OFFICE"
+    Name = "GW-CCO-FRONT-OFFICE"
   }
 }
 resource "aws_customer_gateway" "sidera_bo" {
@@ -19,7 +19,7 @@ resource "aws_customer_gateway" "sidera_bo" {
   ip_address = "192.93.158.179"
   type       = "ipsec.1"
   tags = {
-    Name  = "GW-CCO-BACK-OFFICE"
+    Name = "GW-CCO-BACK-OFFICE"
   }
 }
 resource "aws_customer_gateway" "sidera_oam" {
@@ -27,7 +27,7 @@ resource "aws_customer_gateway" "sidera_oam" {
   ip_address = "192.93.158.180"
   type       = "ipsec.1"
   tags = {
-    Name  = "GW-CCO-OAM"
+    Name = "GW-CCO-OAM"
   }
 }
 
@@ -75,7 +75,7 @@ resource "aws_vpn_connection" "vpnoam" {
   tunnel2_phase2_lifetime_seconds      = 3600
 
   tags = {
-    Name  = "VPNSideraOnPremiseOAM"
+    Name = "VPNSideraOnPremiseOAM"
   }
 
 

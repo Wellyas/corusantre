@@ -6,26 +6,26 @@ resource "aws_route53_zone" "private" {
   }
 }
 resource "aws_subnet" "sc_dns1" {
-  vpc_id     = aws_vpc.sidera_cloud.id
+  vpc_id            = aws_vpc.sidera_cloud.id
   cidr_block        = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, 5)
   availability_zone = "${data.aws_region.current.name}a"
   tags = {
-    Name  = "Zone DNS 1"
+    Name = "Zone DNS 1"
   }
 }
 resource "aws_subnet" "sc_dns2" {
-  vpc_id     = aws_vpc.sidera_cloud.id
+  vpc_id            = aws_vpc.sidera_cloud.id
   cidr_block        = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, 6)
   availability_zone = "${data.aws_region.current.name}b"
   tags = {
-    Name  = "Zone DNS 2"
+    Name = "Zone DNS 2"
   }
 }
 
 resource "aws_route53_record" "ns" {
   zone_id = aws_route53_zone.private.zone_id
-  count = length(aws_route53_resolver_endpoint.dns.ip_address)
-  name    = "ns${count.index+1}.${aws_route53_zone.private.name}"
+  count   = length(aws_route53_resolver_endpoint.dns.ip_address)
+  name    = "ns${count.index + 1}.${aws_route53_zone.private.name}"
   type    = "A"
   ttl     = 30
   records = aws_route53_resolver_endpoint.dns.ip_address.*.ip
@@ -36,7 +36,7 @@ resource "aws_route53_record" "aws" {
   name            = aws_route53_zone.private.name
   ttl             = 172800
   type            = "NS"
-  zone_id      = aws_route53_zone.private.zone_id
+  zone_id         = aws_route53_zone.private.zone_id
 
   records = aws_route53_record.ns.*.name
 
@@ -46,7 +46,7 @@ resource "aws_security_group" "sg_dns" {
   name   = "ZoneDNS ACL"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
-    Name  = "Security Groupe - DNS"
+    Name = "Security Groupe - DNS"
   }
 
   ingress {
@@ -84,5 +84,5 @@ resource "aws_route53_resolver_endpoint" "dns" {
 
 output "dns_privates_ns" {
   value = aws_route53_resolver_endpoint.dns.ip_address.*.ip
-  
+
 }

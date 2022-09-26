@@ -1,13 +1,13 @@
 resource "aws_instance" "wab" {
-  ami           = "ami-0a279a1895fc6d09d"
-  instance_type = "t3.small"
-  vpc_security_group_ids = [aws_security_group.sg_access.id]
-  subnet_id = aws_subnet.sc_access.id
+  ami                         = "ami-0a279a1895fc6d09d"
+  instance_type               = "t3.small"
+  vpc_security_group_ids      = [aws_security_group.sg_access.id]
+  subnet_id                   = aws_subnet.sc_access.id
   key_name                    = aws_key_pair.ssh.key_name
   associate_public_ip_address = false
 
   tags = {
-    Name  = "sidawswabadm01p"
+    Name = "sidawswabadm01p"
   }
 }
 

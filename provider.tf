@@ -23,10 +23,10 @@ provider "aws" {
   region = "eu-west-3"
   default_tags {
     tags = {
-      Owner = "Taleb E."
+      Owner       = "Taleb E."
       Environment = "Preprod"
-      Projet = "Cloudification"
-      DeployedBy = "Terraform"
+      Projet      = "Cloudification"
+      DeployedBy  = "Terraform"
     }
   }
 }
