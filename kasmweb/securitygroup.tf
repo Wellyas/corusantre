@@ -106,7 +106,8 @@ resource "aws_security_group" "kasm-webapp-sg" {
     from_port   = 6379
     to_port     = 6379
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    //cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = aws_subnet.sc_kasm_db.*.cidr_block
     //cidr_blocks = [aws_subnet.sc_kasm_db.*.cidr_block]
   }
   #egress {
