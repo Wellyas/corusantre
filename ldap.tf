@@ -148,7 +148,7 @@ resource "aws_route_table_association" "nat" {
 resource "aws_lb_target_group" "ldap" {
   name     = "ldap-lb-tg"
   port     = 80
-  target_type = "alb"
+  target_type = "ip"
   protocol = "TCP"
   vpc_id   = aws_vpc.sidera_cloud.id
 }
