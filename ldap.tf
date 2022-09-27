@@ -44,7 +44,7 @@ resource "aws_ecs_service" "ldap" {
   deployment_minimum_healthy_percent = 0
 
 
-  network_configuration = {
+  network_configuration {
       subnets = [
           aws_subnet.sc_access.id
       ]
