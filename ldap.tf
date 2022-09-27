@@ -8,7 +8,7 @@ resource "aws_ecs_task_definition" "ldap" {
 
   depends_on = [
     random_password.ldaprootpassword,
-    aws_cloudwatch_log_group.ecs_loggroup
+    aws_cloudwatch_log_group.ecs_ldap
   ]
 
   container_definitions = <<EOF
@@ -27,8 +27,9 @@ resource "aws_ecs_task_definition" "ldap" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
+        "awslogs-create-group": "true",
         "awslogs-region": "eu-west-3",
-        "awslogs-group": "${aws_cloudwatch_log_group.ecs_loggroup.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.ecs_ldap.name}",
         "awslogs-stream-prefix": "ec2"
       }
     }
@@ -39,6 +40,11 @@ EOF
 runtime_platform {
     operating_system_family = "LINUX"
 }
+}
+
+resource "aws_cloudwatch_log_group" "ecs_ldap" {
+  name              = "/aws/ecs/ldap"
+  retention_in_days = 2
 }
 
 resource "aws_ecs_service" "ldap" {
