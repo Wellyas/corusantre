@@ -23,8 +23,15 @@ resource "aws_ecs_task_definition" "ldap" {
       {"name": "LDAPS_PORT", "value": "636"},
       {"name": "BASE_DN", "value": "dc=aws,dc=csoc,dc=thales"},
       {"name": "ROOT_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
-    ]
-    
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "eu-west-3",
+        "awslogs-group": "${aws_cloudwatch_log_group.ecs_loggroup.name}",
+        "awslogs-stream-prefix": "ec2"
+      }
+    }
   }
 ]
 EOF
