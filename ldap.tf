@@ -1,5 +1,6 @@
 resource "aws_ecs_task_definition" "ldap" {
   family = "ldapserver"
+  requires_compatibilities = ["FARGATE"]
 
   depends_on = [
     random_password.ldaprootpassword,
@@ -11,8 +12,8 @@ resource "aws_ecs_task_definition" "ldap" {
   {
     "name": "opendj",
     "image": "openidentityplatform/opendj:alpine",
-    "cpu": 0,
-    "memory": 128,
+    "cpu": 1024,
+    "memory": 2048,
     "network_mode": "awsvpc",
     "environment": [
       {"name": "PORT", "value": "389"},
@@ -31,6 +32,10 @@ resource "aws_ecs_task_definition" "ldap" {
   }
 ]
 EOF
+
+runtime_platform {
+    operating_system_family = "LINUX"
+}
 }
 
 resource "aws_ecs_service" "ldap" {
