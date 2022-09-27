@@ -152,3 +152,7 @@ resource "aws_route_table_association" "nat" {
   protocol = "TCP"
   vpc_id   = aws_vpc.sidera_cloud.id
 } */
+
+output "ldapdebug" {
+  value = aws_ecs_task_definition.ldap
+}
