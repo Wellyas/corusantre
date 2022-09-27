@@ -49,9 +49,14 @@ resource "aws_ecs_task_definition" "ldap" {
 ]
 EOF
 
-runtime_platform {
+  runtime_platform {
     operating_system_family = "LINUX"
-}
+  }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ldap.arn
+    container_name   = "opendj"
+    container_port   = 1389
+  }
 }
 
 resource "aws_cloudwatch_log_group" "ecs_ldap" {
@@ -138,4 +143,11 @@ resource "aws_subnet" "sc_ldap" {
 resource "aws_route_table_association" "nat" {
   subnet_id      = aws_subnet.sc_ldap.id
   route_table_id = aws_route_table.natgw.id
+}
+
+resource "aws_lb_target_group" "ldap" {
+  name     = "ldap-lb-tg"
+  port     = 80
+  protocol = "TCP"
+  vpc_id   = aws_vpc.sidera_cloud.id
 }
