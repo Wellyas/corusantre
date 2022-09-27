@@ -38,12 +38,15 @@ resource "aws_security_group" "sg_admin_from_wab" {
   tags = {
     Name = "Admin access"
   }
+  depends_on = [
+    aws_instance.wab
+  ]
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [aws_instance.wab.private_ip]
+    cidr_blocks = ["${aws_instance.wab.private_ip}/32"]
   }
 
 }
