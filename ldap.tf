@@ -52,11 +52,6 @@ EOF
   runtime_platform {
     operating_system_family = "LINUX"
   }
-  load_balancer {
-    target_group_arn = aws_lb_target_group.ldap.arn
-    container_name   = "opendj"
-    container_port   = 1389
-  }
 }
 
 resource "aws_cloudwatch_log_group" "ecs_ldap" {
@@ -82,6 +77,11 @@ resource "aws_ecs_service" "ldap" {
       security_groups = [
           aws_security_group.sg_ldap.id
       ]
+  }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ldap.arn
+    container_name   = "opendj"
+    container_port   = 1389
   }
 }
 
