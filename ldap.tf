@@ -19,18 +19,18 @@ resource "aws_ecs_task_definition" "ldap" {
     "cpu": 1024,
     "memory": 2048,
     "environment": [
-      {"name": "PORT", "value": "1389"},
-      {"name": "LDAPS_PORT", "value": "1636"},
+      {"name": "PORT", "value": "389"},
+      {"name": "LDAPS_PORT", "value": "636"},
       {"name": "BASE_DN", "value": "dc=aws,dc=csoc,dc=thales"},
       {"name": "ROOT_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
     ],
     "portMappings": [
       {
-        "containerPort": 1389,
+        "containerPort": 389,
         "hostPort": 389
       },
       {
-        "containerPort": 1636,
+        "containerPort": 636,
         "hostPort": 636
       }
     ],
