@@ -154,6 +154,6 @@ resource "aws_route_table_association" "nat" {
 } */
 
 output "ldapdebug" {
-  value = aws_ecs_task_definition.ldap
+  value = aws_ecs_service.ldap
   sensitive=true
   }
