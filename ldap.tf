@@ -23,6 +23,7 @@ resource "aws_ecs_task_definition" "ldap" {
       {"name": "PORT", "value": "1389"},
       {"name": "LDAPS_PORT", "value": "1636"},
       {"name": "BASE_DN", "value": "dc=aws,dc=csoc,dc=thales"},
+      {"name": "ROOT_USER_DN", "value": "cn=idm"},
       {"name": "ROOT_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
     ],
     "portMappings": [
