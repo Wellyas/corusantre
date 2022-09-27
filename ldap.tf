@@ -1,3 +1,4 @@
+
 resource "aws_ecs_task_definition" "ldap" {
   family = "ldapserver"
   requires_compatibilities = ["FARGATE"]
@@ -19,19 +20,19 @@ resource "aws_ecs_task_definition" "ldap" {
     "cpu": 1024,
     "memory": 2048,
     "environment": [
-      {"name": "PORT", "value": "389"},
-      {"name": "LDAPS_PORT", "value": "636"},
+      {"name": "PORT", "value": "1389"},
+      {"name": "LDAPS_PORT", "value": "1636"},
       {"name": "BASE_DN", "value": "dc=aws,dc=csoc,dc=thales"},
       {"name": "ROOT_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
     ],
     "portMappings": [
       {
-        "containerPort": 389,
-        "hostPort": 389
+        "containerPort": 1389,
+        "hostPort": 1389
       },
       {
-        "containerPort": 636,
-        "hostPort": 636
+        "containerPort": 1636,
+        "hostPort": 1636
       }
     ],
     "logConfiguration": {
@@ -111,8 +112,8 @@ resource "aws_security_group" "sg_ldap" {
   }
   ingress {
     description = "TLS to LDAP"
-    from_port   = 389
-    to_port     = 389
+    from_port   = 1389
+    to_port     = 1389
     protocol    = "tcp"
     cidr_blocks = [aws_vpn_connection_route.admin.destination_cidr_block,aws_vpc.sidera_cloud.cidr_block]
   }
