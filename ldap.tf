@@ -1,6 +1,7 @@
 resource "aws_ecs_task_definition" "ldap" {
   family = "ldapserver"
   requires_compatibilities = ["FARGATE"]
+  network_mode= "awsvpc"
 
   depends_on = [
     random_password.ldaprootpassword,
@@ -14,7 +15,6 @@ resource "aws_ecs_task_definition" "ldap" {
     "image": "openidentityplatform/opendj:alpine",
     "cpu": 1024,
     "memory": 2048,
-    "network_mode": "awsvpc",
     "environment": [
       {"name": "PORT", "value": "389"},
       {"name": "LDAPS_PORT", "value": "636"},
