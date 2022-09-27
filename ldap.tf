@@ -78,11 +78,36 @@ resource "aws_ecs_service" "ldap" {
   }
 }
 
+data "dns_a_record_set" "registry_docker" {
+  #host = module.url_build.host
+  host = "registry-1.docker.io"
+}
+data "dns_a_record_set" "registry_docker_2" {
+  #host = module.url_build.host
+  host = "production.cloudflare.docker.com"
+}
+
 resource "aws_security_group" "sg_ldap" {
     name   = "LDAP ACL"
     vpc_id = aws_vpc.sidera_cloud.id
      tags = {
     Name = "Security Groupe - LDAP"
+  }
+  egress {
+    description= "Docker"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    //cidr_blocks = concat([for x in data.dns_a_record_set.registry_docker.addrs : "${x}/32"],[for x in data.dns_a_record_set.registry_docker_2.addrs : "${x}/32"])
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    description= "Docker"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    //cidr_blocks = concat([for x in data.dns_a_record_set.registry_docker.addrs : "${x}/32"],[for x in data.dns_a_record_set.registry_docker_2.addrs : "${x}/32"])
+    cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     description = "TLS to LDAP"
