@@ -13,7 +13,7 @@ resource "aws_eip" "nat_gateway_eip" {
 }
 
 resource "aws_route_table" "natgw" {
-  vpc_id = data.aws_vpc.vpc.id
+  vpc_id = aws_vpc.sidera_cloud.id
 
   route {
     cidr_block = "0.0.0.0/0"

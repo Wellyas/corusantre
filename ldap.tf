@@ -90,7 +90,7 @@ resource "random_password" "ldaprootpassword" {
 }
 
 resource "aws_subnet" "sc_ldap" {
-  vpc_id     = data.aws_vpc.vpc.id
+  vpc_id     = aws_vpc.sidera_cloud.id
   cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 13)
 
   tags = {
