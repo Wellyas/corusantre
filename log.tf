@@ -2,8 +2,8 @@ resource "aws_flow_log" "corusant" {
   iam_role_arn    = aws_iam_role.corusant.arn
   log_destination = aws_cloudwatch_log_group.corusant.arn
   traffic_type    = "ALL"
-  vpc_id          = aws_vpc.sidera_cloud.id
-
+  //vpc_id          = aws_vpc.sidera_cloud.id
+  subnet_id = aws_subnet.sc_ldap.id
   max_aggregation_interval = 60
 
   //subnet_id = aws_subnet.sc_kasm_db2.id
