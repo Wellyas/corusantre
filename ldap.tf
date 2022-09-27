@@ -2,6 +2,9 @@ resource "aws_ecs_task_definition" "ldap" {
   family = "ldapserver"
   requires_compatibilities = ["FARGATE"]
   network_mode= "awsvpc"
+  cpu = 1024
+  memory = 2048
+  execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
 
   depends_on = [
     random_password.ldaprootpassword,
