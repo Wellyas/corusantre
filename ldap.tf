@@ -44,7 +44,7 @@ runtime_platform {
 
 resource "aws_cloudwatch_log_group" "ecs_ldap" {
   name              = "/aws/ecs/ldap"
-  retention_in_days = 2
+  retention_in_days = 3
 }
 
 resource "aws_ecs_service" "ldap" {
@@ -87,4 +87,18 @@ resource "random_password" "ldaprootpassword" {
   length           = 26
   special          = true
   override_special = "_,"
+}
+
+resource "aws_subnet" "sc_ldap" {
+  vpc_id     = data.aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 13)
+
+  tags = {
+    Name  = "Zone LDAP"
+  }
+}
+
+resource "aws_route_table_association" "nat" {
+  subnet_id      = aws_subnet.sc_ldap.id
+  route_table_id = aws_route_table.natgw.id
 }
