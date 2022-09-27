@@ -29,3 +29,21 @@ resource "aws_route53_record" "wabcname" {
     aws_route53_record.wab.fqdn,
   ]
 }
+
+
+
+resource "aws_security_group" "sg_admin_from_wab" {
+  name   = "ACL Acces "
+  vpc_id = aws_vpc.sidera_cloud.id
+  tags = {
+    Name = "Admin access"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [aws_instance.wab.private_ip]
+  }
+
+}
