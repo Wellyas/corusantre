@@ -42,3 +42,26 @@ resource "aws_cloudwatch_log_group" "ecs_loggroup" {
   retention_in_days = 7
 
 }
+
+data "aws_iam_policy" "ecs_task_execution_policy" {
+  name = "AmazonECSTaskExecutionRolePolicy"
+}
+
+data "aws_iam_policy_document" "instance_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "ecsTaskExecutionRole" {
+  name                = "ecsTaskExecutionRole"
+  assume_role_policy  = data.aws_iam_policy_document.instance_assume_role_policy.json
+  managed_policy_arns = [
+      aws_iam_policy.ecs_task_execution_policy.arn
+  ]
+}
