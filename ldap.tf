@@ -70,7 +70,7 @@ resource "aws_ecs_service" "ldap" {
 
   network_configuration {
       subnets = [
-          aws_subnet.sc_access.id
+          aws_subnet.sc_ldap.id
       ]
       security_groups = [
           aws_security_group.sg_ldap.id
