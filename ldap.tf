@@ -151,6 +151,10 @@ resource "aws_lb_target_group" "ldap" {
   target_type = "ip"
   protocol = "TCP"
   vpc_id   = aws_vpc.sidera_cloud.id
+
+  lifecycle {
+   create_before_destroy = true
+  }
 }
 
 resource "aws_route53_record" "ldapcname" {
@@ -171,6 +175,9 @@ resource "aws_lb_listener" "ecs_lb_ldap" {
   default_action {
     target_group_arn = aws_lb_target_group.ldap.id
     type             = "forward"
+  }
+  lifecycle {
+   create_before_destroy = true
   }
 }
 
