@@ -155,7 +155,7 @@ resource "aws_lb_target_group" "ldap" {
 
 resource "aws_route53_record" "ldapcname" {
   zone_id = aws_route53_zone.private.zone_id
-  name    = "_ldap"
+  name    = "ldap"
   type    = "CNAME"
   ttl     = 300
   records = [
