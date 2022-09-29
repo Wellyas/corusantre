@@ -191,6 +191,16 @@ resource "aws_network_acl_rule" "ecs_lb_ldap" {
   from_port      = 389
   to_port        = 389
 }
+resource "aws_network_acl_rule" "ecs_lb_ldap_out" {
+  network_acl_id = aws_network_acl.ecs_lb.id
+  rule_number    = 101
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.sc_ldap.cidr_block
+  from_port      = 1389
+  to_port        = 1389
+}
 
 output "ldapdebug" {
   value = aws_ecs_service.ldap
