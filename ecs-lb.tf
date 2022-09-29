@@ -1,5 +1,5 @@
 resource "aws_lb" "ecs_lb" {
-  name               = "ecs_lb"
+  name               = "ecs-lb"
   internal           = true
   load_balancer_type = "network"
   subnets            = aws_subnet.sc_ecs_lb.*.id
