@@ -1,3 +1,7 @@
+data "aws_availability_zones" "zone" {
+  state = "available"
+}
+
 resource "aws_vpc" "sidera_cloud" {
   cidr_block = "10.137.0.0/16"
 
