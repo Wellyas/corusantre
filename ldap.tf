@@ -146,7 +146,7 @@ resource "aws_route_table_association" "nat" {
 }
 
 resource "aws_lb_target_group" "ldap" {
-  name     = "ldap-lb-tg"
+  name_prefix     = "ldap"
   port     = 1389
   target_type = "ip"
   protocol = "TCP"
