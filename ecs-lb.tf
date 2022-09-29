@@ -17,3 +17,15 @@ resource "aws_subnet" "sc_ecs_lb" {
     Name  = "Zone Ecs loadbalancer"
   }
 }
+
+resource "aws_route53_record" "ecs-route53-elb-record" {
+  zone_id = aws_route53_zone.private.id
+  name    = "ecs-lb"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.ecs-lb.dns_name
+    zone_id                = aws_lb.ecs-alb.zone_id
+    evaluate_target_health = false
+  }
+}
