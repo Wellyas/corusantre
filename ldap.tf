@@ -78,11 +78,11 @@ resource "aws_ecs_service" "ldap" {
           aws_security_group.sg_ldap.id
       ]
   }
-/*   load_balancer {
+  load_balancer {
     target_group_arn = aws_lb_target_group.ldap.arn
     container_name   = "opendj"
     container_port   = 1389
-  } */
+  }
 }
 
 data "dns_a_record_set" "registry_docker" {
@@ -145,13 +145,32 @@ resource "aws_route_table_association" "nat" {
   route_table_id = aws_route_table.natgw.id
 }
 
-/* resource "aws_lb_target_group" "ldap" {
+resource "aws_lb_target_group" "ldap" {
   name     = "ldap-lb-tg"
   port     = 80
   target_type = "ip"
   protocol = "TCP"
   vpc_id   = aws_vpc.sidera_cloud.id
-} */
+}
+
+resource "aws_route53_record" "ldapcname" {
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "_ldap"
+  type    = "CNAME"
+  ttl     = 300
+  records = [
+    aws_route53_record.ecs-route53-elb-record.fqdn,
+  ]
+}
+
+resource "aws_lb_listener" "ecs_lb_ldap" {
+  load_balancer_arn = aws_lb.ecs_lb.id
+
+  default_action {
+    target_group_arn = aws_lb_target_group.ldap.id
+    type             = "forward"
+  }
+}
 
 output "ldapdebug" {
   value = aws_ecs_service.ldap
