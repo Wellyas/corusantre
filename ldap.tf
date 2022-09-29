@@ -147,7 +147,7 @@ resource "aws_route_table_association" "nat" {
 
 resource "aws_lb_target_group" "ldap" {
   name     = "ldap-lb-tg"
-  port     = 80
+  port     = 1389
   target_type = "ip"
   protocol = "TCP"
   vpc_id   = aws_vpc.sidera_cloud.id
@@ -172,6 +172,17 @@ resource "aws_lb_listener" "ecs_lb_ldap" {
     target_group_arn = aws_lb_target_group.ldap.id
     type             = "forward"
   }
+}
+
+resource "aws_network_acl_rule" "ecs_lb_ldap" {
+  network_acl_id = aws_network_acl.ecs_lb.id
+  rule_number    = 101
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "10.135.190.0/24"
+  from_port      = 389
+  to_port        = 389
 }
 
 output "ldapdebug" {

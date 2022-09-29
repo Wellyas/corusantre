@@ -18,6 +18,18 @@ resource "aws_subnet" "sc_ecs_lb" {
   }
 }
 
+resource "aws_network_acl" "ecs_lb" {
+  vpc_id = aws_vpc.sidera_cloud.id
+  tags = {
+    Name = "LoadBalancer ECS ACL"
+  }
+}
+
+resource "aws_network_acl_association" "ecs_lb" {
+  network_acl_id = aws_network_acl.ecs_lb.id
+  subnet_id      = aws_subnet.sc_ecs_lb[count.index].id
+}
+
 resource "aws_route53_record" "ecs-route53-elb-record" {
   zone_id = aws_route53_zone.private.id
   name    = "ecs-lb"
