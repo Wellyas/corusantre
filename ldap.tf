@@ -36,6 +36,9 @@ resource "aws_ecs_task_definition" "ldap" {
         "hostPort": 1636
       }
     ],
+    "healthCheck" : {
+      "command" : [ "CMD-SHELL", opendj/bin/ldapsearch --hostname localhost --port 1636 --bindDN "$ROOT_USER_DN" --bindPassword $ROOT_PASSWORD --useSsl --trustAll --baseDN "$BASE_DN" --searchScope base "(objectClass=*)" 1.1 || exit 1" ]
+    }
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
