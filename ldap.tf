@@ -165,6 +165,8 @@ resource "aws_route53_record" "ldapcname" {
 
 resource "aws_lb_listener" "ecs_lb_ldap" {
   load_balancer_arn = aws_lb.ecs_lb.id
+  protocol = "TCP"
+  port = 389
 
   default_action {
     target_group_arn = aws_lb_target_group.ldap.id
