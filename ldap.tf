@@ -88,9 +88,6 @@ resource "aws_ecs_service" "ldap" {
     container_name   = "opendj"
     container_port   = 1389
   }
-  lifecycle {
-   create_before_destroy = true
-  }
 }
 
 data "dns_a_record_set" "registry_docker" {
