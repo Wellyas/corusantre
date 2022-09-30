@@ -36,10 +36,6 @@ resource "aws_ecs_task_definition" "ldap" {
         "hostPort": 1636
       }
     ],
-    "healthCheck" : {
-      "command" : [ "CMD-SHELL", "opendj/bin/ldapsearch --hostname localhost --port 1636 --bindDN '$ROOT_USER_DN' --bindPassword '$ROOT_PASSWORD' --useSsl --trustAll --baseDN '$BASE_DN' --searchScope base '(objectClass=*)' 1.1 || exit 1" ],
-      "timeout": 30
-    },
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -57,7 +53,12 @@ EOF
     operating_system_family = "LINUX"
   }
 }
-
+/* 
+    "healthCheck" : {
+      "command" : [ "CMD-SHELL", "opendj/bin/ldapsearch --hostname localhost --port 1636 --bindDN '$ROOT_USER_DN' --bindPassword '$ROOT_PASSWORD' --useSsl --trustAll --baseDN '$BASE_DN' --searchScope base '(objectClass=*)' 1.1 || exit 1" ],
+      "timeout": 30
+    },
+ */
 resource "aws_cloudwatch_log_group" "ecs_ldap" {
   name              = "/corusant/ecs/ldap"
   retention_in_days = 3
@@ -86,6 +87,9 @@ resource "aws_ecs_service" "ldap" {
     target_group_arn = aws_lb_target_group.ldap.arn
     container_name   = "opendj"
     container_port   = 1389
+  }
+  lifecycle {
+   create_before_destroy = true
   }
 }
 
