@@ -69,7 +69,7 @@ resource "aws_ecs_service" "ldap" {
   cluster         = module.ecs.cluster_id
   task_definition = aws_ecs_task_definition.ldap.arn
 
-  desired_count = 2
+  desired_count = 1
 
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0

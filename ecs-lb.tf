@@ -25,11 +25,13 @@ resource "aws_network_acl" "ecs_lb" {
   }
 }
 
-resource "aws_network_acl_association" "ecs_lb" {
+/* 
+No need of specific acl because ANy ANY Allow */
+/* resource "aws_network_acl_association" "ecs_lb" {
   count = length(aws_subnet.sc_ecs_lb)
   network_acl_id = aws_network_acl.ecs_lb.id
   subnet_id      = aws_subnet.sc_ecs_lb[count.index].id
-}
+} */
 
 resource "aws_route53_record" "ecs-route53-elb-record" {
   zone_id = aws_route53_zone.private.id
