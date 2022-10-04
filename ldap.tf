@@ -20,11 +20,11 @@ resource "aws_ecs_task_definition" "ldap" {
     "cpu": 1024,
     "memory": 2048,
     "environment": [
-      {"name": "PORT", "value": "1389"},
-      {"name": "LDAPS_PORT", "value": "1636"},
-      {"name": "BASE_DN", "value": "dc=aws,dc=csoc,dc=thales"},
-      {"name": "ROOT_USER_DN", "value": "cn=idm"},
-      {"name": "ROOT_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
+      {"name": "LDAP_SKIP_DEFAULT_TREE", "value": "yes"},
+      {"name": "LDAP_ALLOW_ANON_BINDING", "value": "false"},
+      {"name": "LDAP_ROOT", "value": "dc=aws,dc=csoc,dc=thales"},
+      {"name": "LDAP_ADMIN_USERNAME", "value": "idm"},
+      {"name": "LDAP_ADMIN_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
     ],
     "portMappings": [
       {
