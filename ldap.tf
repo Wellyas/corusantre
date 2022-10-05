@@ -24,6 +24,8 @@ resource "aws_ecs_task_definition" "ldap" {
       {"name": "LDAP_ALLOW_ANON_BINDING", "value": "false"},
       {"name": "LDAP_ROOT", "value": "dc=aws,dc=csoc,dc=thales"},
       {"name": "LDAP_ADMIN_USERNAME", "value": "idm"},
+      {"name": "LDAP_USERS", "value": ""},
+      {"name": "LDAP_USER_DC", "value": "app"},
       {"name": "LDAP_ADMIN_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
     ],
     "portMappings": [
