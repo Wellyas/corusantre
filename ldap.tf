@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "ldap" {
     "cpu": 1024,
     "memory": 2048,
     "environment": [
-      {"name": "LDAP_SKIP_DEFAULT_TREE", "value": "yes"},
+      {"name": "LDAP_SKIP_DEFAULT_TREE", "value": "no"},
       {"name": "LDAP_ALLOW_ANON_BINDING", "value": "false"},
       {"name": "LDAP_ROOT", "value": "dc=aws,dc=csoc,dc=thales"},
       {"name": "LDAP_ADMIN_USERNAME", "value": "idm"},
