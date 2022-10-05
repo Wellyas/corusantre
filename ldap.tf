@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "ldap" {
 [
   {
     "name": "opendj",
-    "image": "openidentityplatform/opendj:4.5.1",
+    "image": "bitnami/openldap:2.6",
     "cpu": 1024,
     "memory": 2048,
     "environment": [
