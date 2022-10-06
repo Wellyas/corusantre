@@ -129,6 +129,15 @@ resource "aws_security_group" "sg_access" {
       aws_vpc.sidera_cloud.cidr_block
     ]
   }
+  egress {
+    description = "WALLIX to LDAP"
+    from_port   = 389
+    to_port     = 389
+    protocol    = "tcp"
+    cidr_blocks = [
+      aws_vpc.sidera_cloud.cidr_block
+    ]
+  }
 }
 
 resource "aws_security_group" "sg_portail" {
