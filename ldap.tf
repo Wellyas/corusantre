@@ -89,6 +89,7 @@ resource "aws_ecs_service" "ldap" {
       file_system_id          = aws_efs_file_system.ldap_fs.id
       root_directory          = "/opt/data"
     }
+  }
 
   network_configuration {
       subnets = [
