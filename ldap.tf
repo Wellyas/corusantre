@@ -38,6 +38,12 @@ resource "aws_ecs_task_definition" "ldap" {
         "hostPort": 1636
       }
     ],
+    "mountPoints": [
+                {
+                    "sourceVolume": "ldap-storage",
+                    "containerPath": "/bitnami/openldap"
+                }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -76,6 +82,13 @@ resource "aws_ecs_service" "ldap" {
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0
 
+  volume {
+    name = "ldap-storage"
+
+    efs_volume_configuration {
+      file_system_id          = aws_efs_file_system.ldap_fs.id
+      root_directory          = "/opt/data"
+    }
 
   network_configuration {
       subnets = [
@@ -89,6 +102,13 @@ resource "aws_ecs_service" "ldap" {
     target_group_arn = aws_lb_target_group.ldap.arn
     container_name   = "opendj"
     container_port   = 1389
+  }
+}
+
+resource "aws_efs_file_system" "ldap_fs" {
+
+  tags = {
+    Name = "LDAP FS"
   }
 }
 
