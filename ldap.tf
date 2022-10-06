@@ -60,11 +60,6 @@ EOF
 
   volume {
     name = "ldap-storage"
-
-    efs_volume_configuration {
-      file_system_id          = aws_efs_file_system.ldap_fs.id
-      root_directory          = "/opt/data"
-    }
   }
   runtime_platform {
     operating_system_family = "LINUX"
@@ -106,12 +101,6 @@ resource "aws_ecs_service" "ldap" {
   }
 }
 
-resource "aws_efs_file_system" "ldap_fs" {
-
-  tags = {
-    Name = "LDAP FS"
-  }
-}
 
 data "dns_a_record_set" "registry_docker" {
   #host = module.url_build.host
@@ -166,11 +155,6 @@ resource "aws_subnet" "sc_ldap" {
   tags = {
     Name  = "Zone LDAP"
   }
-}
-
-resource "aws_efs_mount_target" "alpha" {
-  file_system_id = aws_efs_file_system.ldap_fs.id
-  subnet_id      = aws_subnet.sc_ldap.id
 }
 resource "aws_route_table_association" "nat" {
   subnet_id      = aws_subnet.sc_ldap.id
