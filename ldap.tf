@@ -168,6 +168,10 @@ resource "aws_subnet" "sc_ldap" {
   }
 }
 
+resource "aws_efs_mount_target" "alpha" {
+  file_system_id = aws_efs_file_system.ldap_fs.id
+  subnet_id      = aws_subnet.sc_ldap.id
+}
 resource "aws_route_table_association" "nat" {
   subnet_id      = aws_subnet.sc_ldap.id
   route_table_id = aws_route_table.natgw.id
