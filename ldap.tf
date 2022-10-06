@@ -41,6 +41,7 @@ resource "aws_ecs_task_definition" "ldap" {
     "mountPoints": [
                 {
                     "sourceVolume": "ldap-storage",
+                    "ReadOnly": false,
                     "containerPath": "/bitnami/openldap"
                 }
     ],
