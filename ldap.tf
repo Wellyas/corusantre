@@ -57,6 +57,15 @@ resource "aws_ecs_task_definition" "ldap" {
 ]
 EOF
 
+
+  volume {
+    name = "ldap-storage"
+
+    efs_volume_configuration {
+      file_system_id          = aws_efs_file_system.ldap_fs.id
+      root_directory          = "/opt/data"
+    }
+  }
   runtime_platform {
     operating_system_family = "LINUX"
   }
@@ -81,15 +90,6 @@ resource "aws_ecs_service" "ldap" {
 
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0
-
-  volume {
-    name = "ldap-storage"
-
-    efs_volume_configuration {
-      file_system_id          = aws_efs_file_system.ldap_fs.id
-      root_directory          = "/opt/data"
-    }
-  }
 
   network_configuration {
       subnets = [
