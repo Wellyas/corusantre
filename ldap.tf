@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "ldap" {
       {"name": "LDAP_ALLOW_ANON_BINDING", "value": "false"},
       {"name": "LDAP_ROOT", "value": "dc=aws,dc=csoc,dc=thales"},
       {"name": "LDAP_ADMIN_USERNAME", "value": "idm"},
-      {"name": "LDAP_USERS", "value": ""},
+      {"name": "LDAP_USERS", "value": "wallix"},
       {"name": "LDAP_USER_DC", "value": "app"},
       {"name": "LDAP_ADMIN_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
     ],
@@ -70,7 +70,7 @@ resource "aws_ecs_service" "ldap" {
   name            = "ldap"
   cluster         = module.ecs.cluster_id
   task_definition = aws_ecs_task_definition.ldap.arn
-
+  platform_version = "1.4.0"
   desired_count = 1
 
   deployment_maximum_percent         = 100
