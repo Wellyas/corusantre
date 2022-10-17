@@ -61,6 +61,7 @@ EOF
 
   volume {
     name = "ldap-storage"
+    host_path = "/data/ldap"
   }
   runtime_platform {
     operating_system_family = "LINUX"
