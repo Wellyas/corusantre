@@ -38,13 +38,6 @@ resource "aws_ecs_task_definition" "ldap" {
         "hostPort": 1636
       }
     ],
-    "mountPoints": [
-                {
-                    "sourceVolume": "ldap-storage",
-                    "ReadOnly": false,
-                    "containerPath": "/bitnami/openldap"
-                }
-    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -61,7 +54,6 @@ EOF
 
   volume {
     name = "ldap-storage"
-    host_path = "/data/ldap"
   }
   runtime_platform {
     operating_system_family = "LINUX"
