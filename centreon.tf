@@ -14,7 +14,7 @@ resource "aws_instance" "centreon" {
 
 resource "aws_subnet" "sc_centreon" {
   vpc_id     = aws_vpc.sidera_cloud.id
-  cidr_block = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 8)
+  cidr_block = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, 8)
 
   tags = {
     Name = "Zone Centreon"
