@@ -1,4 +1,4 @@
-resource "aws_flow_log" "corusant" {
+/* resource "aws_flow_log" "corusant" {
   iam_role_arn    = aws_iam_role.corusant.arn
   log_destination = aws_cloudwatch_log_group.corusant.arn
   traffic_type    = "ALL"
@@ -56,4 +56,4 @@ resource "aws_iam_role_policy" "corusant" {
   ]
 }
 EOF
-}
+} */
