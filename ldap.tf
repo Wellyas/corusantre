@@ -1,5 +1,5 @@
 
-resource "aws_ecs_task_definition" "ldap" {
+/* resource "aws_ecs_task_definition" "ldap" {
   family = "ldapserver"
   requires_compatibilities = ["FARGATE"]
   network_mode= "awsvpc"
@@ -13,43 +13,43 @@ resource "aws_ecs_task_definition" "ldap" {
   ]
 
   container_definitions = <<EOF
-[
-  {
-    "name": "opendj",
-    "image": "bitnami/openldap:2.6",
-    "cpu": 1024,
-    "memory": 2048,
-    "environment": [
-      {"name": "LDAP_SKIP_DEFAULT_TREE", "value": "no"},
-      {"name": "LDAP_ALLOW_ANON_BINDING", "value": "false"},
-      {"name": "LDAP_ROOT", "value": "dc=aws,dc=csoc,dc=thales"},
-      {"name": "LDAP_ADMIN_USERNAME", "value": "idm"},
-      {"name": "LDAP_USERS", "value": "wallix,wallix2"},
-      {"name": "LDAP_USER_DC", "value": "app"},
-      {"name": "LDAP_ADMIN_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
-    ],
-    "portMappings": [
-      {
-        "containerPort": 1389,
-        "hostPort": 1389
-      },
-      {
-        "containerPort": 1636,
-        "hostPort": 1636
-      }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-create-group": "true",
-        "awslogs-region": "eu-west-3",
-        "awslogs-group": "${aws_cloudwatch_log_group.ecs_ldap.name}",
-        "awslogs-stream-prefix": "ec2"
+  [
+    {
+      "name": "opendj",
+      "image": "bitnami/openldap:2.6",
+      "cpu": 1024,
+      "memory": 2048,
+      "environment": [
+        {"name": "LDAP_SKIP_DEFAULT_TREE", "value": "no"},
+        {"name": "LDAP_ALLOW_ANON_BINDING", "value": "false"},
+        {"name": "LDAP_ROOT", "value": "dc=aws,dc=csoc,dc=thales"},
+        {"name": "LDAP_ADMIN_USERNAME", "value": "idm"},
+        {"name": "LDAP_USERS", "value": "wallix,wallix2"},
+        {"name": "LDAP_USER_DC", "value": "app"},
+        {"name": "LDAP_ADMIN_PASSWORD", "value": "${random_password.ldaprootpassword.result}"}
+      ],
+      "portMappings": [
+        {
+          "containerPort": 1389,
+          "hostPort": 1389
+        },
+        {
+          "containerPort": 1636,
+          "hostPort": 1636
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-region": "eu-west-3",
+          "awslogs-group": "${aws_cloudwatch_log_group.ecs_ldap.name}",
+          "awslogs-stream-prefix": "ec2"
+        }
       }
     }
-  }
-]
-EOF
+  ]
+  EOF
 
 
   volume {
@@ -59,12 +59,7 @@ EOF
     operating_system_family = "LINUX"
   }
 }
-/* 
-    "healthCheck" : {
-      "command" : [ "CMD-SHELL", "opendj/bin/ldapsearch --hostname localhost --port 1636 --bindDN '$ROOT_USER_DN' --bindPassword '$ROOT_PASSWORD' --useSsl --trustAll --baseDN '$BASE_DN' --searchScope base '(objectClass=*)' 1.1 || exit 1" ],
-      "timeout": 30
-    },
- */
+
 resource "aws_cloudwatch_log_group" "ecs_ldap" {
   name              = "/corusant/ecs/ldap"
   retention_in_days = 3
@@ -215,4 +210,4 @@ resource "aws_network_acl_rule" "ecs_lb_ldap_out" {
 output "ldapdebug" {
   value = aws_ecs_service.ldap
   sensitive=true
-  }
+  } */
