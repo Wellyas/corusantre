@@ -38,6 +38,9 @@ resource "aws_security_group" "sg_admin_from_wab" {
   tags = {
     Name = "Admin access"
   }
+  lifecycle {
+    create_before_destroy = true
+  }
   depends_on = [
     aws_instance.wab
   ]
