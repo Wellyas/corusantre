@@ -41,7 +41,7 @@ resource "aws_route_table" "route_centreon" {
 }
 resource "aws_vpn_gateway_route_propagation" "sideraOAM-cent" {
   vpn_gateway_id = aws_vpn_gateway.sideracloud_vpngw.id
-  route_table_id = aws_route_table.id
+  route_table_id = aws_route_table.route_centreon.id
 }
 
 resource "aws_route_table_association" "nat_sc_centreon" {
