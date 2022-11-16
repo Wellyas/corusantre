@@ -31,9 +31,22 @@ resource "aws_subnet" "sc_centreon" {
   }
 }
 
+resource "aws_route_table" "route_centreon" {
+  vpc_id = aws_vpc.sidera_cloud.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.gw.id
+  }
+}
+resource "aws_vpn_gateway_route_propagation" "sideraOAM-cent" {
+  vpn_gateway_id = aws_vpn_gateway.sideracloud_vpngw.id
+  route_table_id = aws_route_table.id
+}
+
 resource "aws_route_table_association" "nat_sc_centreon" {
   subnet_id      = aws_subnet.sc_centreon.id
-  route_table_id = aws_route_table.natgw.id
+  route_table_id = aws_route_table.route_centreon.id
 }
 
 
