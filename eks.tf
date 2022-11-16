@@ -1,4 +1,4 @@
-resource "aws_subnet" "sc_eks" {
+/* resource "aws_subnet" "sc_eks" {
   count = 2
   private_dns_hostname_type_on_launch = "resource-name"
   availability_zone = data.aws_availability_zones.zone.names[count.index]
@@ -77,4 +77,4 @@ module "eks" {
       ]
     }
   }
-}
+} */
