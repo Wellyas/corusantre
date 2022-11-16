@@ -1,4 +1,4 @@
-/* resource "aws_subnet" "sc_eks" {
+resource "aws_subnet" "sc_eks" {
   count = 2
   private_dns_hostname_type_on_launch = "resource-name"
   availability_zone = data.aws_availability_zones.zone.names[count.index]
@@ -38,6 +38,8 @@ module "eks" {
 
     # Disabling and using externally provided security groups
     create_security_group = false
+
+    key_name = aws_key_pair.ssh.key_name
   }
 
   eks_managed_node_groups = {
@@ -77,4 +79,4 @@ module "eks" {
       ]
     }
   }
-} */
+}
