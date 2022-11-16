@@ -1,4 +1,4 @@
-locals {
+/* locals {
   ecs_name = "sidera-containers-services"
 }
 
@@ -64,4 +64,4 @@ resource "aws_iam_role" "ecsTaskExecutionRole" {
   managed_policy_arns = [
       data.aws_iam_policy.ecs_task_execution_policy.arn
   ]
-}
+} */
