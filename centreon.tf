@@ -6,6 +6,8 @@ resource "aws_instance" "centreon" {
   key_name                    = aws_key_pair.ssh.key_name
   associate_public_ip_address = false
 
+
+  user_data_replace_on_change = true
   user_data = <<-EOF
 #!/bin/bash -xe
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
