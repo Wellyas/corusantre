@@ -7,13 +7,14 @@ resource "aws_instance" "centreon" {
   associate_public_ip_address = false
 
   user_data = <<-EOF
-              #!/bin/bash
-              sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
-              yum install -y http://yum.centreon.com/standard/19.10/el7/stable/noarch/RPMS/centreon-release-19.10-1.el7.centos.noarch.rpm 
-              yum install centreon-poller-centreon-engine
-              echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxk6So6/0jIQ/pnq38lyXF9PZ7QKAW9RJCk5OA60ERYJlqIdDN5NhPQibHTCbO8b8BnV/6giVfnRPhGL3WZyw3GZ+KRDHTmocnlt9LfBnMNIP8gB7TPx3T90hfeLzUYFfZ3vlWyBScHTiTpaGpxFkwJ/d3LU0xY2QQ8v7L1ge/KhfvbGRykjcRa4FExi98WrPmEHrjdtVtG0R0h2SRVP9Gpb/KRURFdLDpwReNqF0m0zHe1nJt9tr0+gHIJZYzTl1YOJc370tapMg/n1Ih6ar/WccfxKnWyTymJAbMTVecbOy/FZ9EGo1FW612Ae9VhWVoVHvrukRmtXwRnYQZ30noVZvzdy7wfLMqeLpjicm05XVVULmvcDni1eBhhpNc+zdaIulVKHFdy2Usz0cBBj3FZomHBdKk9XCfNZdHYdVZ4tU8eN9K//2fW5SHJYBr89ekpLCpoKBoYAeteAtEWAW0bK0ZbKUEtCEXTRJEgIW4Je7NRgWH3vG6KZHvp932LHUFLnpW5dgpoA7qx+qMv1dtgYGIZpnUU797wguDyuSD+lmILpozQzc0ulJd8uiaEwG90ugZONYBYK8X6oulOMzARah/20XNPU3rPJy8PWCvQBY7NI9TchcdvMVab1+6KGw37XRfDlNRiHDH1fmB+jQGqOccYPIu4WLPuIRY5fNDAQ== centreon@siddc1cenadm01p" > /var/spool/centreon/.ssh/authorized_keys
-              systemctl enable centengine
-              systemctl start centengine
+              #!/bin/bash -xe
+              exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+                sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+                yum install -y http://yum.centreon.com/standard/19.10/el7/stable/noarch/RPMS/centreon-release-19.10-1.el7.centos.noarch.rpm 
+                yum install centreon-poller-centreon-engine
+                echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxk6So6/0jIQ/pnq38lyXF9PZ7QKAW9RJCk5OA60ERYJlqIdDN5NhPQibHTCbO8b8BnV/6giVfnRPhGL3WZyw3GZ+KRDHTmocnlt9LfBnMNIP8gB7TPx3T90hfeLzUYFfZ3vlWyBScHTiTpaGpxFkwJ/d3LU0xY2QQ8v7L1ge/KhfvbGRykjcRa4FExi98WrPmEHrjdtVtG0R0h2SRVP9Gpb/KRURFdLDpwReNqF0m0zHe1nJt9tr0+gHIJZYzTl1YOJc370tapMg/n1Ih6ar/WccfxKnWyTymJAbMTVecbOy/FZ9EGo1FW612Ae9VhWVoVHvrukRmtXwRnYQZ30noVZvzdy7wfLMqeLpjicm05XVVULmvcDni1eBhhpNc+zdaIulVKHFdy2Usz0cBBj3FZomHBdKk9XCfNZdHYdVZ4tU8eN9K//2fW5SHJYBr89ekpLCpoKBoYAeteAtEWAW0bK0ZbKUEtCEXTRJEgIW4Je7NRgWH3vG6KZHvp932LHUFLnpW5dgpoA7qx+qMv1dtgYGIZpnUU797wguDyuSD+lmILpozQzc0ulJd8uiaEwG90ugZONYBYK8X6oulOMzARah/20XNPU3rPJy8PWCvQBY7NI9TchcdvMVab1+6KGw37XRfDlNRiHDH1fmB+jQGqOccYPIu4WLPuIRY5fNDAQ== centreon@siddc1cenadm01p" > /var/spool/centreon/.ssh/authorized_keys
+                systemctl enable centengine
+                systemctl start centengine
               EOF
 
   tags = {
