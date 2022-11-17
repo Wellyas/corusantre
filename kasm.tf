@@ -32,6 +32,10 @@ output "appsh" {
   value     = module.kasmweb.appinstall
   sensitive = true
 }
+output "agentsh" {
+  value     = module.kasmweb.agentinstall
+  sensitive = true
+}
 
 output "arn_validation" {
   value = module.kasmweb.arn_validation

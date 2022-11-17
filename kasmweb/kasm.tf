@@ -224,8 +224,15 @@ output "dbinfo" {
 
 output "appinstall" {
   value = "kasm_release/install.sh -O -t -S app -e -z ${var.zone_name} -q ${aws_rds_cluster.kasmdb.endpoint} -Q ${random_password.database.result} -R '' -o ${aws_elasticache_cluster.kasmredis.cache_nodes.0.address}"
+  sensitive = true
+}
+
+output "agentinstall" {
+  value = "bash kasm_release/install.sh -S agent -e  -p $PRIVATE_IP -m ${aws_instance.kasm-web-app.private_ip} -M ${random_password.manager.result}"
+  sensitive = true
 }
 
 output "web_userdata" { 
   value = aws_instance.kasm-web-app.user_data
+  sensitive = true
 }
