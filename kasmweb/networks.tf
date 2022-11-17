@@ -11,13 +11,13 @@ resource "aws_subnet" "sc_kasm_db" {
   count = 2
   private_dns_hostname_type_on_launch = "resource-name"
   availability_zone = data.aws_availability_zones.zone.names[count.index]
-  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+9)
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+100)
 
   tags = {
     Name  = "Zone Kasmweb DB ${data.aws_availability_zones.zone.names[count.index]}"
   }
    lifecycle {
-   prevent_destroy = true
+   create_before_destroy = true
  }
 }
 resource "aws_subnet" "sc_kasm_lb" {
@@ -25,13 +25,13 @@ resource "aws_subnet" "sc_kasm_lb" {
   count = 2
   private_dns_hostname_type_on_launch = "resource-name"
   availability_zone = data.aws_availability_zones.zone.names[count.index]
-  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+11)
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+102)
 
   tags = {
     Name  = "Zone Kasmweb LB ${data.aws_availability_zones.zone.names[count.index]}"
   }
    lifecycle {
-   prevent_destroy = true
+   create_before_destroy = true
  }
 }
 resource "aws_subnet" "sc_kasm_web" {
