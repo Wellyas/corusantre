@@ -113,6 +113,9 @@ resource "aws_db_subnet_group" "kasmdb" {
   tags = {
     Name = "DB Subnet Kasmweb"
   }
+   lifecycle {
+   create_before_destroy = true
+ }
 }
 
 resource "aws_elasticache_subnet_group" "kasm_subnet_group" {
@@ -121,4 +124,7 @@ resource "aws_elasticache_subnet_group" "kasm_subnet_group" {
   tags = {
     Name = "Redis Subnet Kasmweb"
   }
+   lifecycle {
+   create_before_destroy = true
+ }
 }

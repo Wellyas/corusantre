@@ -4,7 +4,7 @@ resource "aws_instance" "kasm-web-app" {
   vpc_security_group_ids      = ["${aws_security_group.kasm-webapp-sg.id}"]
   subnet_id                   = aws_subnet.sc_kasm_web.id
   key_name                    = var.key_name
-  associate_public_ip_address = true
+  associate_public_ip_address = false
 
   depends_on = [
     aws_rds_cluster.kasmdb
