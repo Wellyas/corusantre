@@ -227,5 +227,5 @@ output "appinstall" {
 }
 
 output "web_userdata" { 
-  value = aws_instance.aws_instance.user_data
+  value = aws_instance.kasm-web-app.user_data
 }
