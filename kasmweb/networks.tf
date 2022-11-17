@@ -16,6 +16,9 @@ resource "aws_subnet" "sc_kasm_db" {
   tags = {
     Name  = "Zone Kasmweb DB ${data.aws_availability_zones.zone.names[count.index]}"
   }
+   lifecycle {
+   prevent_destroy = true
+ }
 }
 resource "aws_subnet" "sc_kasm_lb" {
   vpc_id     = data.aws_vpc.vpc.id
@@ -27,6 +30,9 @@ resource "aws_subnet" "sc_kasm_lb" {
   tags = {
     Name  = "Zone Kasmweb LB ${data.aws_availability_zones.zone.names[count.index]}"
   }
+   lifecycle {
+   prevent_destroy = true
+ }
 }
 resource "aws_subnet" "sc_kasm_web" {
   vpc_id     = data.aws_vpc.vpc.id
