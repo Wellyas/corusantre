@@ -61,7 +61,7 @@ resource "aws_security_group" "kasm-webapp-sg" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [aws_subnet.sc_kasm_agent.cidr_block]
-}
+  }
    ingress {
     from_port   = 443
     to_port     = 443
@@ -134,12 +134,12 @@ resource "aws_security_group" "kasm-webapp-sg" {
       "52.84.174.0/24"
     ]
   }
-  #egress {
-  #  from_port   = 0
-  #  to_port     = 0
-  #  protocol    = -1
-  #  cidr_blocks = ["0.0.0.0/0"] 
-  #}
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"] 
+  }
 
 }
 
@@ -261,12 +261,18 @@ resource "aws_security_group" "kasm-agent-sg" {
     protocol    = "tcp"
     cidr_blocks = var.proxies_servers_cidr
   }
-  #egress {
-  #  from_port   = 0
-  #  to_port     = 0
-  #  protocol    = -1
-  #  cidr_blocks = ["0.0.0.0/0"] 
-  #}
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = tcp
+    cidr_blocks = ["0.0.0.0/0"] 
+  }
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = tcp
+    cidr_blocks = ["0.0.0.0/0"] 
+  }
 }
 
 resource "aws_security_group" "kasm-default-elb-sg" {
