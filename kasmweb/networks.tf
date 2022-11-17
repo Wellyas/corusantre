@@ -91,7 +91,7 @@ resource "aws_route_table_association" "ks_sagent" {
 }
 resource "aws_route_table_association" "ks_sweb" {
   subnet_id      = aws_subnet.sc_kasm_web.id
-  route_table_id = aws_route_table.dmz.id
+  route_table_id = aws_route_table.r.id
 }
 
 resource "aws_route_table_association" "ks_spub" {
