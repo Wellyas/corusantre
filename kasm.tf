@@ -39,4 +39,5 @@ output "arn_validation" {
 
 output "debug" {
   value = module.kasmweb.web_userdata
+  sensitive = true
 }
