@@ -11,7 +11,7 @@ resource "aws_subnet" "sc_kasm_db" {
   count = 2
   private_dns_hostname_type_on_launch = "resource-name"
   availability_zone = data.aws_availability_zones.zone.names[count.index]
-  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+100)
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, count.index+9)
 
   tags = {
     Name  = "Zone Kasmweb DB ${data.aws_availability_zones.zone.names[count.index]}"
