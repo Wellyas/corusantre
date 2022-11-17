@@ -110,6 +110,8 @@ resource "aws_db_subnet_group" "kasmdb" {
   name       = "kasmdb"
   subnet_ids = aws_subnet.sc_kasm_db.*.id
 
+  depends_on = aws_subnet.sc_kasm_db.*.id
+
   tags = {
     Name = "DB Subnet Kasmweb"
   }
