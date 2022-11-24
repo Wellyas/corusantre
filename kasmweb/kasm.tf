@@ -104,7 +104,7 @@ resource "aws_instance" "kasm-agent" {
 }
 
 resource "aws_instance" "kasm-agent-pub" {
-  count                       = var.num_agents
+  count                       = 1
   ami                         = var.ec2_ami
   instance_type               = var.agent_instance_type
   vpc_security_group_ids      = [aws_security_group.kasm-agent-sg.id,aws_security_group.kasm-agent-internet-sg.id]
