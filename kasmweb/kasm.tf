@@ -113,7 +113,8 @@ resource "aws_instance" "kasm-agent-pub" {
   associate_public_ip_address = false
 
   depends_on = [
-    aws_instance.kasm-web-app
+    aws_instance.kasm-web-app,
+    aws_seucirty_group.kasm-agent-internet-sg
   ]
   root_block_device {
     volume_size = "80"
