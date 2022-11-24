@@ -148,63 +148,13 @@ resource "aws_security_group" "kasm-agent-internet-sg" {
   description = "Allow access to agents"
   vpc_id = data.aws_vpc.vpc.id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.ssh_access_cidr]
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["${aws_subnet.sc_kasm_web.cidr_block}"]
-  }
-
   egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [for x in data.dns_a_record_set.kasmweb_site.addrs : "${x}/32"] 
-  }
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = [for x in data.dns_a_record_set.kasmweb_site.addrs : "${x}/32"] 
-  }
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["${aws_subnet.sc_kasm_web.cidr_block}"]
-  }
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow to Internet"
   }
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [for x in data.dns_a_record_set.registry_docker.addrs : "${x}/32"] 
-  }
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [for x in data.dns_a_record_set.registry_docker_2.addrs : "${x}/32"] 
-  }
-
 }
 resource "aws_security_group" "kasm-agent-sg" {
   name        = "ACL kasm-agent-access"

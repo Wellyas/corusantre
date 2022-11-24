@@ -103,6 +103,39 @@ resource "aws_instance" "kasm-agent" {
   }
 }
 
+resource "aws_instance" "kasm-agent-pub" {
+  count                       = var.num_agents
+  ami                         = var.ec2_ami
+  instance_type               = var.agent_instance_type
+  vpc_security_group_ids      = [aws_security_group.kasm-agent-sg.id,aws_seucirty_group.kasm-agent-internet-sg.id]
+  subnet_id = aws_subnet.sc_kasm_agent_pub.id
+  key_name                    = var.key_name
+  associate_public_ip_address = false
+
+  depends_on = [
+    aws_instance.kasm-web-app
+  ]
+  root_block_device {
+    volume_size = "80"
+  }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              fallocate -l 5g /mnt/kasm.swap
+              chmod 600 /mnt/kasm.swap
+              mkswap /mnt/kasm.swap
+              swapon /mnt/kasm.swap
+              echo '/mnt/kasm.swap swap swap defaults 0 0' | tee -a /etc/fstab
+              cd /tmp
+              wget ${var.kasm_build}
+              tar xvf kasm_*.tar.gz
+              PRIVATE_IP=(`curl -s http://169.254.169.254/latest/meta-data/local-ipv4`)
+              bash kasm_release/install.sh -S agent -e  -p pub_$PRIVATE_IP -m ${aws_instance.kasm-web-app.private_ip} -M ${random_password.manager.result}
+              EOF
+  tags = {
+    Name  = "${format("sidawsksmpub%02sp",count.index+1)}"
+  }
+}
 /* resource "aws_route53_record" "kasm-db" {
   count = var.private_zone_id != "" ? 1 : 0 
   zone_id = var.private_zone_id
@@ -118,6 +151,14 @@ resource "aws_route53_record" "kasm-agent" {
   type    = "A"
   ttl     = 300
   records = [aws_instance.kasm-agent[count.index].private_ip]
+}
+resource "aws_route53_record" "kasm-agent-pub" {
+  count = var.private_zone_id != "" ? length(aws_instance.kasm-agent-pub) : 0 
+  zone_id = var.private_zone_id
+  name    = aws_instance.kasm-agent-pub[count.index].tags.Name
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.kasm-agent-pub[count.index].private_ip]
 }
 
 resource "aws_route53_record" "kasm-web-app" {

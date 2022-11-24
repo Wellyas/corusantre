@@ -52,6 +52,14 @@ resource "aws_subnet" "sc_kasm_agent" {
     Name  = "Zone Kaswmeb Agent"
   }
 }
+resource "aws_subnet" "sc_kasm_agent_pub" {
+  vpc_id     = data.aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 1)
+
+  tags = {
+    Name  = "Zone Kaswmeb Agent Pub"
+  }
+}
 resource "aws_subnet" "sc_kasm_pub" {
   vpc_id     = data.aws_vpc.vpc.id
   cidr_block        = cidrsubnet(data.aws_vpc.vpc.cidr_block, 12, 4)
@@ -87,6 +95,10 @@ resource "aws_vpn_gateway_route_propagation" "vpn" {
 resource "aws_route_table_association" "ks_sagent" {
   subnet_id      = aws_subnet.sc_kasm_agent.id
   #route_table_id = aws_route_table.dmz.id
+  route_table_id = aws_route_table.r.id
+}
+resource "aws_route_table_association" "ks_sagentpub" {
+  subnet_id      = aws_subnet.sc_kasm_agent_pub.id
   route_table_id = aws_route_table.r.id
 }
 resource "aws_route_table_association" "ks_sweb" {
