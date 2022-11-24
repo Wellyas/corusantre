@@ -86,6 +86,12 @@ resource "aws_security_group" "kasm-webapp-sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
+    cidr_blocks = [aws_subnet.sc_kasm_agent_pub.cidr_block]
+  }
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = [for x in data.dns_a_record_set.kasmweb_site.addrs : "${x}/32"] 
   }
   egress {
