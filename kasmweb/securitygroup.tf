@@ -62,6 +62,12 @@ resource "aws_security_group" "kasm-webapp-sg" {
     protocol    = "tcp"
     cidr_blocks = [aws_subnet.sc_kasm_agent.cidr_block]
   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_subnet.sc_kasm_agent_pub.cidr_block]
+  }
    ingress {
     from_port   = 443
     to_port     = 443
