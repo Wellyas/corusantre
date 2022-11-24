@@ -107,14 +107,13 @@ resource "aws_instance" "kasm-agent-pub" {
   count                       = var.num_agents
   ami                         = var.ec2_ami
   instance_type               = var.agent_instance_type
-  vpc_security_group_ids      = [aws_security_group.kasm-agent-sg.id,aws_seucirty_group.kasm-agent-internet-sg.id]
+  vpc_security_group_ids      = [aws_security_group.kasm-agent-sg.id,aws_security_group.kasm-agent-internet-sg.id]
   subnet_id = aws_subnet.sc_kasm_agent_pub.id
   key_name                    = var.key_name
   associate_public_ip_address = false
 
   depends_on = [
-    aws_instance.kasm-web-app,
-    aws_seucirty_group.kasm-agent-internet-sg
+    aws_instance.kasm-web-app
   ]
   root_block_device {
     volume_size = "80"
