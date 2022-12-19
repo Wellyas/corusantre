@@ -147,7 +147,7 @@ users:
       args:
         - "token"
         - "-i"
-        - "${var.cluster-name}"
+        - "${module.eks.cluster_name}"
 KUBECONFIG
 }
 
