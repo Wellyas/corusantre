@@ -119,3 +119,38 @@ resource "aws_security_group" "sg_eks" {
 output "eks_cluster" {
   value = replace(module.eks.cluster_endpoint,"https://","")
 }
+
+locals {
+  kubeconfig = <<KUBECONFIG
+
+
+apiVersion: v1
+clusters:
+- cluster:
+    server: https://${aws_route53_record.aws_route53_record.fqdn}
+    certificate-authority-data: ${module.eks.cluster_certificate_authority_data}
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: aws
+  name: aws
+current-context: aws
+kind: Config
+preferences: {}
+users:
+- name: aws
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      command: aws-iam-authenticator
+      args:
+        - "token"
+        - "-i"
+        - "${var.cluster-name}"
+KUBECONFIG
+}
+
+output "kubeconfig" {
+  value = "${local.kubeconfig}"
+}
