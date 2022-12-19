@@ -32,6 +32,7 @@ resource "aws_vpn_gateway_route_propagation" "sideraOAM-eks" {
 locals {
   cluster_name = "sidera-eks-${random_string.suffix.result}"
   cluster_version = "1.24"
+  gui_access = ["10.135.190.0/23"]
 }
 
 resource "random_string" "suffix" {
@@ -78,7 +79,8 @@ module "eks" {
       EOT
 
       vpc_security_group_ids = [
-        aws_security_group.sg_admin_from_wab.id
+        aws_security_group.sg_admin_from_wab.id,
+        aws_security_group.sg_eks.id
       ]
     }
 
@@ -93,6 +95,25 @@ resource "aws_route53_record" "ekscname" {
   records = [
     replace(module.eks.cluster_endpoint,"https://",""),
   ]
+}
+
+resource "aws_security_group" "sg_eks" {
+  name   = "ACL Acces"
+  vpc_id = aws_vpc.sidera_cloud.id
+  tags = {
+    Name = "Admin access"
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = local.gui_access
+  }
+
 }
 
 output "eks_cluster" {
