@@ -1,4 +1,4 @@
-/* resource "aws_subnet" "sc_eks" {
+resource "aws_subnet" "sc_eks" {
   count = 2
   private_dns_hostname_type_on_launch = "resource-name"
   availability_zone = data.aws_availability_zones.zone.names[count.index]
@@ -12,6 +12,7 @@
 
 locals {
   cluster_name = "sidera-eks-${random_string.suffix.result}"
+  cluster_version = "1.24"
 }
 
 resource "random_string" "suffix" {
@@ -21,10 +22,10 @@ resource "random_string" "suffix" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "18.26.6"
+  version = "19.3.1"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.22"
+  cluster_version = local.cluster_version
   
   cluster_endpoint_private_access = true 
   
@@ -61,22 +62,5 @@ module "eks" {
       ]
     }
 
-    two = {
-      name = "node-group-2"
-
-      instance_types = ["t3.medium"]
-
-      min_size     = 1
-      max_size     = 2
-      desired_size = 1
-
-      pre_bootstrap_user_data = <<-EOT
-      echo 'foo bar'
-      EOT
-
-      vpc_security_group_ids = [
-        aws_security_group.sg_admin_from_wab.id
-      ]
-    }
   }
-} */
+}
