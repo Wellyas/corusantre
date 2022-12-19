@@ -98,7 +98,7 @@ resource "aws_route53_record" "ekscname" {
 }
 
 resource "aws_security_group" "sg_eks" {
-  name   = "ACL Acces"
+  name   = "ACL EKS From SID"
   vpc_id = aws_vpc.sidera_cloud.id
   tags = {
     Name = "Admin access"
