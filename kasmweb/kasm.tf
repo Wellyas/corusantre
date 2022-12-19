@@ -130,7 +130,7 @@ resource "aws_instance" "kasm-agent-pub" {
               wget ${var.kasm_build}
               tar xvf kasm_*.tar.gz
               PRIVATE_IP=(`curl -s http://169.254.169.254/latest/meta-data/local-ipv4`)
-              bash kasm_release/install.sh -S agent -e  -p pub_$PRIVATE_IP -m ${aws_instance.kasm-web-app.private_ip} -M ${random_password.manager.result}
+              bash kasm_release/install.sh -S agent -e  -p $PRIVATE_IP -m ${aws_instance.kasm-web-app.private_ip} -M ${random_password.manager.result}
               EOF
   tags = {
     Name  = "${format("sidawsksmpub%02sp",count.index+1)}"
