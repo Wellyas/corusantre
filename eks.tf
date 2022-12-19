@@ -48,43 +48,53 @@ module "eks" {
   cluster_version = local.cluster_version
   
   cluster_endpoint_private_access = true 
+  cluster_endpoint_public_access = false
   
   vpc_id     = aws_vpc.sidera_cloud.id
   subnet_ids = aws_subnet.sc_eks.*.id
 
-  eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
-
-    attach_cluster_primary_security_group = true
-    use_custom_launch_template = false
-
-    # Disabling and using externally provided security groups
-    #create_security_group = false
-
-    key_name = aws_key_pair.ssh.key_name
+  cluster_addons = {
+    kube-proxy = {}
+    vpc-cni    = {}
+    coredns = {
+      configuration_values = jsonencode({
+        computeType = "Fargate"
+      })
+    }
   }
 
-  eks_managed_node_groups = {
+   fargate_profiles = {
     one = {
-      name = "node-group-1"
-
-      instance_types = ["t3.small"]
-
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
-
-      pre_bootstrap_user_data = <<-EOT
-      echo 'foo bar'
-      EOT
-
-      vpc_security_group_ids = [
-        aws_security_group.sg_admin_from_wab.id,
-        aws_security_group.sg_eks.id
+      name = "one"
+      selectors = [
+        {
+          namespace = "backend"
+          labels = {
+            Application = "backend"
+          }
+        },
+        {
+          namespace = "app-*"
+          labels = {
+            Application = "app-wildcard"
+          }
+        }
       ]
+
+      timeouts = {
+        create = "20m"
+        delete = "20m"
+      }
     }
 
+    kube_system = {
+      name = "kube-system"
+      selectors = [
+        { namespace = "kube-system" }
+      ]
+    }
   }
+
 }
 
 resource "aws_route53_record" "ekscname" {
