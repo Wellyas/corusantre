@@ -36,6 +36,7 @@ module "eks" {
     ami_type = "AL2_x86_64"
 
     attach_cluster_primary_security_group = true
+    use_custom_launch_template = false
 
     # Disabling and using externally provided security groups
     create_security_group = false
