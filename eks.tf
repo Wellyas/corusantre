@@ -39,7 +39,7 @@ module "eks" {
     use_custom_launch_template = false
 
     # Disabling and using externally provided security groups
-    create_security_group = false
+    #create_security_group = false
 
     key_name = aws_key_pair.ssh.key_name
   }
