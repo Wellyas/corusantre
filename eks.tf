@@ -127,7 +127,7 @@ locals {
 apiVersion: v1
 clusters:
 - cluster:
-    server: https://${aws_route53_record.aws_route53_record.fqdn}
+    server: https://${aws_route53_record.ekscname.fqdn}
     certificate-authority-data: ${module.eks.cluster_certificate_authority_data}
   name: kubernetes
 contexts:
