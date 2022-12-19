@@ -72,6 +72,15 @@ module "eks" {
   }
 }
 
+resource "aws_route53_record" "ekscname" {
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "k8s"
+  type    = "CNAME"
+  ttl     = 300
+  records = [
+    replace(module.eks.cluster_endpoint,"https://",""),
+  ]
+}
 
 output "eks_cluster" {
   value = replace(module.eks.cluster_endpoint,"https://","")
