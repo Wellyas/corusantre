@@ -10,7 +10,7 @@ resource "aws_subnet" "sc_eks" {
   }
 }
 
-resource "aws_route_table_association" "nat_sc_centreon" {
+resource "aws_route_table_association" "nat_sc_eks" {
   count = length(aws_subnet.sc_eks)
   subnet_id      = aws_subnet.sc_eks[count.index].id
   route_table_id = aws_route_table.natgw.id
