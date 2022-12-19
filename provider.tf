@@ -25,14 +25,14 @@ terraform {
 
 provider "aws" {
   region = "eu-west-3"
-/*   default_tags {
+  default_tags {
     tags = {
       Owner       = "Taleb E."
       Environment = "Preprod"
       Projet      = "Cloudification"
       DeployedBy  = "Terraform"
     }
-  } */
+  }
 }
 
 data "aws_region" "current" {}
