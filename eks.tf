@@ -13,7 +13,20 @@ resource "aws_subnet" "sc_eks" {
 resource "aws_route_table_association" "nat_sc_eks" {
   count = length(aws_subnet.sc_eks)
   subnet_id      = aws_subnet.sc_eks[count.index].id
-  route_table_id = aws_route_table.natgw.id
+  route_table_id = aws_route_table.eks.id
+}
+
+resource "aws_route_table" "eks" {
+  vpc_id = aws_vpc.sidera_cloud.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.gw.id
+  }
+}
+resource "aws_vpn_gateway_route_propagation" "sideraOAM-eks" {
+  vpn_gateway_id = aws_vpn_gateway.sideracloud_vpngw.id
+  route_table_id = aws_route_table.eks.id
 }
 
 locals {
