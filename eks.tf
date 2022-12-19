@@ -10,6 +10,12 @@ resource "aws_subnet" "sc_eks" {
   }
 }
 
+resource "aws_route_table_association" "nat_sc_centreon" {
+  count = length(aws_subnet.sc_eks)
+  subnet_id      = aws_subnet.sc_eks[count.index].id
+  route_table_id = aws_route_table.natgw.id
+}
+
 locals {
   cluster_name = "sidera-eks-${random_string.suffix.result}"
   cluster_version = "1.24"
