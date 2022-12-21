@@ -40,7 +40,7 @@ resource "random_string" "suffix" {
   special = false
 }
 
-module "eks" {
+/* module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.3.1"
 
@@ -96,7 +96,7 @@ module "eks" {
     }
   }
 
-}
+} */
 
 resource "aws_iam_policy" "additional" {
   name = "eks-additional"
@@ -121,7 +121,8 @@ resource "aws_route53_record" "ekscname" {
   type    = "CNAME"
   ttl     = 300
   records = [
-    replace(module.eks.cluster_endpoint, "https://", ""),
+    "toto"
+    //replace(module.eks.cluster_endpoint, "https://", ""),
   ]
 }
 
@@ -144,11 +145,8 @@ resource "aws_security_group" "sg_eks" {
 
 }
 
-output "eks_cluster" {
-  value = replace(module.eks.cluster_endpoint, "https://", "")
-}
 
-locals {
+/* locals {
   kubeconfig = <<KUBECONFIG
 
 
@@ -181,4 +179,4 @@ KUBECONFIG
 
 output "kubeconfig" {
   value = local.kubeconfig
-}
+} */
