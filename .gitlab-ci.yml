@@ -51,6 +51,8 @@ build:
   tags:
     - docker
   script:
+    - echo $AWS_ACCESS_KEY_ID
+    - echo $AWS_SECRET_ACCESS_KEY
     - terraform plan
     - terraform plan-json
   rules:
