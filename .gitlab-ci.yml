@@ -3,13 +3,14 @@ variables:
   AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
   HTTPS_PROXY: http://proxy.csoc.thales:328/
 
+
 cache:
   key: "${TF_ROOT}"
   paths:
     - ${TF_ROOT}/.terraform/
 
 fmt:
-  stage: validate
+  stage: build
   image: hashicorp/terraform:light
   script:
   - fmt
@@ -20,7 +21,7 @@ fmt:
     when: never
 
 validate:
-  stage: validate
+  stage: build
   image: hashicorp/terraform:light
   tags:
     - docker
