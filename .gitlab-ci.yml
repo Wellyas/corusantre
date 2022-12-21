@@ -18,7 +18,11 @@ fmt:
   extends: .terraform:fmt
 
 validate:
+  image: hashicorp/terraform:light
   extends: .terraform:validate
+  script:
+  - cd "${TF_ROOT}"
+  - terraform validate
 
 build:
   image: hashicorp/terraform:light
