@@ -14,9 +14,9 @@ cache:
     - ${TF_ROOT}/.terraform/
 
 stages:
-  - .terraform_fmt
-  - .terraform_validate
-  - .terraform_build
+  - fmt
+  - validate
+  - build
 
 .terraform:fmt: &terraform_fmt
   stage: validate
@@ -54,4 +54,11 @@ stages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
 
+fmt:
+  <<: *terraform_fmt
 
+validate:
+  <<: *terraform_validate
+
+build:
+  <<: *terraform_build
