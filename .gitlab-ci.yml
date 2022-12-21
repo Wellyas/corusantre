@@ -3,9 +3,6 @@ variables:
   AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
   HTTPS_PROXY: http://proxy.csoc.thales:328/
 
-image:
-  name: hashicorp/terraform:light
-
 include:
   - template: Terraform.latest.gitlab-ci.yml
 
@@ -15,20 +12,32 @@ cache:
     - ${TF_ROOT}/.terraform/
 
 fmt:
-  extends: .terraform:fmt
+  stage: validate
   image: hashicorp/terraform:light
   script:
-  - terraform fmt
+  - fmt
+  allow_failure: true
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: "$CI_OPEN_MERGE_REQUESTS"
+    when: never
 
 validate:
+  stage: validate
   image: hashicorp/terraform:light
   tags:
     - docker
   extends: .terraform:validate
   script:
-  - terraform validate
+  - validate
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: "$CI_OPEN_MERGE_REQUESTS"
+    when: never
+  - if: "$CI_COMMIT_BRANCH"
 
 build:
+  stage: build
   image: hashicorp/terraform:light
   tags:
     - docker
@@ -36,8 +45,14 @@ build:
   script:
     - terraform plan
     - terraform plan-json
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: "$CI_OPEN_MERGE_REQUESTS"
+    when: never
+  - if: "$CI_COMMIT_BRANCH"
 
 deploy:
+  stage: deploy
   image: hashicorp/terraform:light
   tags:
     - docker
