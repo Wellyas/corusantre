@@ -12,10 +12,11 @@ image:
 before_script:
   - |
     cat <<EOF > $TF_CLI_CONFIG_FILE
-    echo "credentials "app.terraform.io" {
+    credentials "app.terraform.io" {
     token = "$TFE_TOKEN"
     }
-    EOF 
+    EOF
+  - cat $TF_CLI_CONFIG_FILE
   - terraform init
 
 cache:
