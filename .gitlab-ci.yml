@@ -19,6 +19,8 @@ fmt:
 
 validate:
   image: hashicorp/terraform:light
+  tags:
+    - docker
   extends: .terraform:validate
   script:
   - cd "${TF_ROOT}"
@@ -26,6 +28,8 @@ validate:
 
 build:
   image: hashicorp/terraform:light
+  tags:
+    - docker
   extends: .terraform:build
   script:
     - cd "${TF_ROOT}"
@@ -34,6 +38,8 @@ build:
 
 deploy:
   image: hashicorp/terraform:light
+  tags:
+    - docker
   script:
     - terraform init
     - terraform import -auto-approve
