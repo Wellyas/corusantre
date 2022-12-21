@@ -52,6 +52,7 @@ module "eks" {
   
   vpc_id     = aws_vpc.sidera_cloud.id
   subnet_ids = aws_subnet.sc_eks.*.id
+  security_group_ids = [aws_security_group.sg_eks.id]
 
   cluster_addons = {
     kube-proxy = {}
