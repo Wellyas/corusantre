@@ -3,6 +3,9 @@ variables:
   AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
   HTTPS_PROXY: http://proxy.csoc.thales:328/
 
+image:
+  name: hashicorp/terraform:light
+
 include:
   - template: Terraform.latest.gitlab-ci.yml
 
@@ -18,10 +21,15 @@ validate:
   extends: .terraform:validate
 
 build:
+  image: hashicorp/terraform:light
   extends: .terraform:build
+  script:
+    - cd "${TF_ROOT}"
+    - terraform plan
+    - terraform plan-json
 
 deploy:
-  image: hashicorp/terraform/light
+  image: hashicorp/terraform:light
   script:
     - terraform init
     - terraform import -auto-approve
