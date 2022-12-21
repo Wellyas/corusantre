@@ -1,6 +1,6 @@
 variables:
   AWS_ACCESS_KEY_ID: $TF_VAR_access_key
-  AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
+  AWS_SECRET_ACCESS_KEY: $TF_VAR_secret_key
   TFE_TOKEN: $TR_VAR_tfe_token
   HTTPS_PROXY: http://proxy.csoc.thales:3128/
   TF_CLI_CONFIG_FILE: conf.tfrc
