@@ -1,17 +1,17 @@
 resource "aws_subnet" "sc_eks" {
-  count = 2
+  count                               = 2
   private_dns_hostname_type_on_launch = "resource-name"
-  availability_zone = data.aws_availability_zones.zone.names[count.index]
-  vpc_id     = aws_vpc.sidera_cloud.id
-  cidr_block        = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, count.index+20)
+  availability_zone                   = data.aws_availability_zones.zone.names[count.index]
+  vpc_id                              = aws_vpc.sidera_cloud.id
+  cidr_block                          = cidrsubnet(aws_vpc.sidera_cloud.cidr_block, 12, count.index + 20)
 
   tags = {
-    Name  = "Zone EKS"
+    Name = "Zone EKS"
   }
 }
 
 resource "aws_route_table_association" "nat_sc_eks" {
-  count = length(aws_subnet.sc_eks)
+  count          = length(aws_subnet.sc_eks)
   subnet_id      = aws_subnet.sc_eks[count.index].id
   route_table_id = aws_route_table.eks.id
 }
@@ -30,9 +30,9 @@ resource "aws_vpn_gateway_route_propagation" "sideraOAM-eks" {
 }
 
 locals {
-  cluster_name = "sidera-eks-${random_string.suffix.result}"
+  cluster_name    = "sidera-eks-${random_string.suffix.result}"
   cluster_version = "1.24"
-  gui_access = ["10.135.190.0/23"]
+  gui_access      = ["10.135.190.0/23"]
 }
 
 resource "random_string" "suffix" {
@@ -46,13 +46,13 @@ module "eks" {
 
   cluster_name    = local.cluster_name
   cluster_version = local.cluster_version
-  
-  cluster_endpoint_private_access = true 
-  cluster_endpoint_public_access = false
-  
-  vpc_id     = aws_vpc.sidera_cloud.id
-  subnet_ids = aws_subnet.sc_eks.*.id
-  security_group_ids = [aws_security_group.sg_eks.id]
+
+  cluster_endpoint_private_access = true
+  cluster_endpoint_public_access  = false
+
+  vpc_id                                = aws_vpc.sidera_cloud.id
+  subnet_ids                            = aws_subnet.sc_eks.*.id
+  cluster_additional_security_group_ids = [aws_security_group.sg_eks.id]
 
   cluster_addons = {
     kube-proxy = {}
@@ -64,7 +64,7 @@ module "eks" {
     }
   }
 
-   fargate_profiles = {
+  fargate_profiles = {
     one = {
       name = "one"
       selectors = [
@@ -121,7 +121,7 @@ resource "aws_route53_record" "ekscname" {
   type    = "CNAME"
   ttl     = 300
   records = [
-    replace(module.eks.cluster_endpoint,"https://",""),
+    replace(module.eks.cluster_endpoint, "https://", ""),
   ]
 }
 
@@ -145,7 +145,7 @@ resource "aws_security_group" "sg_eks" {
 }
 
 output "eks_cluster" {
-  value = replace(module.eks.cluster_endpoint,"https://","")
+  value = replace(module.eks.cluster_endpoint, "https://", "")
 }
 
 locals {
@@ -180,5 +180,5 @@ KUBECONFIG
 }
 
 output "kubeconfig" {
-  value = "${local.kubeconfig}"
+  value = local.kubeconfig
 }
