@@ -21,5 +21,7 @@ build:
   extends: .terraform:build
 
 deploy:
+  image: hashicorp/terraform/light
   script:
-    - "echo toto"
+    - terraform init
+    - terraform import -auto-approve
