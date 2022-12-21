@@ -3,12 +3,19 @@ variables:
   AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
   TFE_TOKEN: $TR_VAR_tfe_token
   HTTPS_PROXY: http://proxy.csoc.thales:3128/
+  TF_CLI_CONFIG_FILE: conf.tfrc
 
 image:
   name: hashicorp/terraform:light
   entrypoint: [""]
 
 before_script:
+  - |
+    cat <<EOF > $TF_CLI_CONFIG_FILE
+    echo "credentials "app.terraform.io" {
+    token = "$TFE_TOKEN"
+    }
+    EOF 
   - terraform init
 
 cache:
