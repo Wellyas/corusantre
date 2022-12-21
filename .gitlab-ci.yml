@@ -3,9 +3,6 @@ variables:
   AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
   HTTPS_PROXY: http://proxy.csoc.thales:328/
 
-include:
-  - template: Terraform.latest.gitlab-ci.yml
-
 cache:
   key: "${TF_ROOT}"
   paths:
@@ -27,7 +24,6 @@ validate:
   image: hashicorp/terraform:light
   tags:
     - docker
-  extends: .terraform:validate
   script:
   - validate
   rules:
@@ -41,7 +37,6 @@ build:
   image: hashicorp/terraform:light
   tags:
     - docker
-  extends: .terraform:build
   script:
     - terraform plan
     - terraform plan-json
