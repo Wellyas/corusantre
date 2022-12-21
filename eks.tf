@@ -40,7 +40,7 @@ resource "random_string" "suffix" {
   special = false
 }
 
-/* module "eks" {
+module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.3.1"
 
@@ -96,7 +96,7 @@ resource "random_string" "suffix" {
     }
   }
 
-} */
+}
 
 resource "aws_iam_policy" "additional" {
   name = "eks-additional"
@@ -146,7 +146,7 @@ resource "aws_security_group" "sg_eks" {
 }
 
 
-/* locals {
+locals {
   kubeconfig = <<KUBECONFIG
 
 
@@ -179,4 +179,4 @@ KUBECONFIG
 
 output "kubeconfig" {
   value = local.kubeconfig
-} */
+}
