@@ -13,6 +13,11 @@ cache:
   paths:
     - ${TF_ROOT}/.terraform/
 
+stages:
+  - .terraform_fmt
+  - .terraform_validate
+  - .terraform_build
+
 .terraform:fmt: &terraform_fmt
   stage: validate
   script:
