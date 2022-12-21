@@ -16,6 +16,9 @@ cache:
 
 fmt:
   extends: .terraform:fmt
+  image: hashicorp/terraform:light
+  script:
+  - terraform fmt
 
 validate:
   image: hashicorp/terraform:light
@@ -23,7 +26,6 @@ validate:
     - docker
   extends: .terraform:validate
   script:
-  - cd "${TF_ROOT}"
   - terraform validate
 
 build:
@@ -32,7 +34,6 @@ build:
     - docker
   extends: .terraform:build
   script:
-    - cd "${TF_ROOT}"
     - terraform plan
     - terraform plan-json
 
