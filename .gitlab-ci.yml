@@ -3,6 +3,12 @@ variables:
   AWS_SECRET_ACCESS_KEY: $TF_VAR_access_key
   HTTPS_PROXY: http://proxy.csoc.thales:328/
 
+image:
+  name: hashicorp/terraform:light
+  entrypoint: [""]
+
+before_script:
+  - terraform init
 
 cache:
   key: "${TF_ROOT}"
@@ -11,9 +17,8 @@ cache:
 
 fmt:
   stage: build
-  image: hashicorp/terraform:light
   script:
-  - fmt
+  - terraform fmt
   allow_failure: true
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -22,11 +27,10 @@ fmt:
 
 validate:
   stage: build
-  image: hashicorp/terraform:light
   tags:
     - docker
   script:
-  - validate
+  - terraform validate
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: "$CI_OPEN_MERGE_REQUESTS"
@@ -35,7 +39,6 @@ validate:
 
 build:
   stage: build
-  image: hashicorp/terraform:light
   tags:
     - docker
   script:
@@ -49,9 +52,7 @@ build:
 
 deploy:
   stage: deploy
-  image: hashicorp/terraform:light
   tags:
     - docker
   script:
-    - terraform init
     - terraform import -auto-approve
